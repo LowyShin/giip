@@ -1,0 +1,53 @@
+<job id="giipDiskCheck.v1.00">
+<script language="VBScript">
+' System Variables =============================================
+at = "{{sk}}"
+lsSn = {{lssn}}
+' ==============================================================
+
+strComputer = "." 
+Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\CIMV2") 
+
+' Logical Disk Drive ====================================================
+Set colItems = objWMIService.ExecQuery( _
+    "SELECT * FROM Win32_LogicalDisk",,48) 
+For Each objItem in colItems 
+	if at <> empty and lsSn <> empty then
+		fv = "at=" & at & "&lsSn=" & lsSn & _
+			"&did=" & objItem.DeviceID & _
+			"&ddesc=" & objItem.Description & _
+			"&vn=" & objItem.VolumeName & _
+			"&fs=" & objItem.FileSystem & _
+			"&fr=" & objItem.FreeSpace & _
+			"&ds=" & objItem.Size
+		lwURL = "http://giip.littleworld.net/API/LSvrDiskStatInput.asp?" & fv
+		lwHTTPRst = lwGetHTTP (lwURL, "GET", "", "utf-8", "text")
+	end if
+	
+Next
+
+Function lwGetHTTP(url, meth, fv, charset, output)
+ Dim xmlHttp
+ Set xmlHttp = CreateObject("MSXML2.serverXMLHTTP")
+ xmlHttp.Open meth, url, False
+	if charset = "utf-8" then
+		xmlHttp.setRequestHeader "Content-Type", " text/html; charset=utf-8"
+	else
+		xmlHttp.setRequestHeader "Content-Type", " text/html"
+	end if
+ if fv = empty then
+   xmlHttp.Send
+ else
+   xmlHttp.Send fv
+ end if
+ txtData = xmlHttp.responseText
+ htmlData = xmlHttp.responsebody
+	if output = "html" then
+		lwGetHTTP = htmlData
+	else
+		lwGetHTTP = txtData
+	end if
+End Function
+
+</script>
+</job>
