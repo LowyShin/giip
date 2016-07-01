@@ -1,0 +1,94 @@
+<job id="lwLogDel">
+<script language="VBScript">
+'==============================================
+' Initializing for giip Service
+' Change tpsn from giip notification service
+' User Variables ----------------------------------------------
+at = "{{sk}}"
+lsSn = {{lssn}}
+
+' =============================================
+' Uncomment and set below to Custom Variables at Que Management
+' tpsn = 15
+' Call lwDelFiles("D:\backup\lwMSPdb", 8)
+'==============================================
+
+{{CustomVariables}}
+
+CntFIle = 0
+
+'Create by Lowy Shin 2006.03.28
+'Call lwDelFiles(Path, TermDay)
+
+
+Sub lwDelFiles(sPath, nDatediff)
+	Dim lwFso, lwFolder, lwFile
+	Set lwFso = WScript.CreateObject("Scripting.FileSystemObject")
+	Set lwFolder = lwFso.GetFolder(sPath)
+	Set lwFiles = lwFolder.Files
+	For Each File In lwFiles
+		ModDate = File.DateLastModified
+		lwFileName = File.Name
+		lwFileSize = File.Size
+		if datediff("d", ModDate, Now()) > nDatediff then
+			lwFso.DeleteFile(sPath & "\" & File.Name)
+		end if
+		if instr(lwFIleName, ".bak") > 0 then
+			if datediff("d", ModDate, Now()) = 1 then
+				CntFile = CntFIle + 1
+				CheckFileName = lwFileName
+			end if
+		end if
+	Next
+
+	UserData = CheckFileName & " (" & lwFileSize & ")" & vbCRLF
+	Call lwMSP_NS_APISend02 (at, tpsn, CntFile, UserData)
+
+	Set lwFile = Nothing
+	Set lwFolder = Nothing
+	Set lwFso = Nothing
+End Sub
+
+ Sub lwMSP_NS_APISend(sk, tpsn, sval)
+ 	fv = "at=" & sk & "&tpSn=" & tpSn & _
+ 	"&ServerData=" & sval
+ 	'msgbox fv
+ 	lwURL = "http://giip.littleworld.net/API/message/put?" & fv
+ 	lwHTTPRst = lwGetHTTP (lwURL, "GET", "", "utf-8", "text")	
+ End Sub
+
+ Sub lwMSP_NS_APISend02(sk, tpsn, sval, uval)
+ 	fv = "at=" & sk & "&tpSn=" & tpSn & _
+ 	"&ServerData=" & sval & "&UserData=" & uval
+ 	'msgbox fv
+ 	lwURL = "http://giip.littleworld.net/API/message/put?" & fv
+ 	lwHTTPRst = lwGetHTTP (lwURL, "GET", "", "utf-8", "text")	
+ End Sub
+ 
+ Function lwGetHTTP(url, meth, fv, charset, output)
+ Dim xmlHttp
+ Set xmlHttp = CreateObject("MSXML2.serverXMLHTTP")
+ xmlHttp.Open meth, url, False
+ 	if charset = "utf-8" then
+ 		xmlHttp.setRequestHeader "Content-Type", " text/html; charset=utf-8"
+ 	else
+ 		xmlHttp.setRequestHeader "Content-Type", " text/html"
+ 	end if
+ 	'xmlHttp.setRequestHeader "Content-Length", "length"
+ 	if fv = empty then
+ 	  xmlHttp.Send
+ 	else
+	  xmlHttp.Send fv
+	end if
+	txtData = xmlHttp.responseText
+	htmlData = xmlHttp.responsebody
+	if output = "html" then
+		lwGetHTTP = htmlData
+	else
+		lwGetHTTP = txtData
+	end if
+End Function
+
+
+</script>
+</job>
