@@ -1,5 +1,6 @@
 # giip
 Global Infrastructure Integration Platform
+http://giip.littleworld.net
 
 ### Service Overview
 Cloud environment has become more common. I believe that most of SE has experienced cloud services, although Cloud services have to be used additionally using current Legacy equipment most of the times. Even it makes SE take more time to learn how to use complicated user portal by using multiple cloud services.
@@ -45,9 +46,6 @@ This service has been provided based on your opinion. It will be revised and cre
 
 
 To log on for this service, simply use Google ID. There is no need to register, no personal information to be saved. E-mail address might be saved if necessary. Although it is not without permission, as customer input the information by themselves. Even though we have been making an effort for security, there is a possibility of bugs. Please contact us by submitting 'inquiry' form, if you find any bug. It will be appreciated.
-
-
-[[IT Asset Management Home]]
 
 
 ### OE : On-Premise Edition
