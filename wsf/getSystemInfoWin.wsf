@@ -1,0 +1,130 @@
+<job id="giipSysInfoUpdate.v1.00">
+<script language="VBScript">
+' System Variables =============================================
+at = "{{sk}}"
+lsSn = {{lssn}}
+' ==============================================================
+
+strComputer = "." 
+Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\CIMV2") 
+
+' Basic Info ====================================================
+Set colItems = objWMIService.ExecQuery( _
+    "SELECT * FROM Win32_ComputerSystem",,48) 
+For Each objItem in colItems 
+    DNSHostName = objItem.DNSHostName
+    Manufacturer = objItem.Manufacturer
+    NumberOfProcessors = objItem.NumberOfProcessors
+    TotalPhysicalMemory = objItem.TotalPhysicalMemory
+Next
+
+' CPU ============================================================
+Set colItems = objWMIService.ExecQuery( _
+    "SELECT * FROM Win32_Processor",,48) 
+For Each objItem in colItems 
+    CPUName = objItem.Name
+Next
+
+' OS ====================================================
+Set colItems = objWMIService.ExecQuery( _
+    "SELECT * FROM Win32_OperatingSystem",,48) 
+For Each objItem in colItems 
+    OSName = objItem.Caption
+Next
+
+' NIC Info ====================================================
+
+Set colItems = objWMIService.ExecQuery( _
+    "SELECT * FROM Win32_NetworkAdapter",,48) 
+For Each objItem in colItems 
+	NetConnectionID = objItem.NetConnectionID
+	NICName = objItem.Name
+	InterfaceIndex = objItem.InterfaceIndex
+
+	if NetConnectionID <> empty then
+		fv = "at=" & at & "&lsSn=" & lsSn & _
+			"&nc=" & NetConnectionID & _
+			"&nn=" & NICName & _
+			"&ii=" & InterfaceIndex
+		lwURL = "http://giip.littleworld.net/API/LSvrNICInfoInput.asp?" & fv
+		lwHTTPRst = lwGetHTTP (lwURL, "GET", "", "utf-8", "text")
+	end if
+Next
+
+
+' Network ====================================================
+Set colItems = objWMIService.ExecQuery( _
+    "SELECT * FROM Win32_NetworkAdapterConfiguration",,48) 
+For Each objItem in colItems 
+    If isNull(objItem.IPAddress) Then
+    Else
+		if isNull(objItem.IPAddress) Then
+			NICIP = "-"
+		else
+			NICIP = Join(objItem.IPAddress, ",") 
+		end if
+		if isNull(objItem.IPSubnet) Then
+			NICSM = "-"
+		else
+			NICSM = Join(objItem.IPSubnet, ",")
+		end if
+		if isNull(objItem.DefaultIPGateway) Then
+			NICGW = "-"
+		else
+			NICGW = Join(objItem.DefaultIPGateway, ",")
+		end if
+		if isNull(objItem.DNSServerSearchOrder) Then
+			NICDNS = "-"
+		else
+			NICDNS = Join(objItem.DNSServerSearchOrder, ",")
+		end if
+		InterfaceIndex = objItem.InterfaceIndex
+
+		fv = "at=" & at & "&lsSn=" & lsSn & _
+			"&ip=" & NICIP & _
+			"&sm=" & NICSM & _
+			"&gw=" & NICGW & _
+			"&ii=" & InterfaceIndex & _
+			"&dns=" & NICDNS
+		lwURL = "http://giip.littleworld.net/API/LSvrNICIPInfoInputV141120.asp?" & fv
+		lwHTTPRst = lwGetHTTP (lwURL, "GET", "", "utf-8", "text")
+			
+    End If
+Next
+
+if TotalPhysicalMemory <> empty then
+	TotalPhysicalMemory = round(TotalPhysicalMemory / 1024 / 1024, 0)
+end if
+
+if at <> empty and lsSn <> empty then
+	fv = "at=" & at & "&lsSn=" & lsSn & "&hn=" & DNSHostName & "&mf=" & Manufacturer & "&cpunum=" & NumberOfProcessors & _
+		"&cpuname=" & CPUName & "&mem=" & TotalPhysicalMemory & "&disk=" & LogicalDiskDesc & "&os=" & OSName
+	lwURL = "http://giip.littleworld.net/API/LSvrInput.asp?" & fv
+	lwHTTPRst = lwGetHTTP (lwURL, "GET", "", "utf-8", "text")
+end if
+
+Function lwGetHTTP(url, meth, fv, charset, output)
+ Dim xmlHttp
+ Set xmlHttp = CreateObject("MSXML2.serverXMLHTTP")
+ xmlHttp.Open meth, url, False
+	if charset = "utf-8" then
+		xmlHttp.setRequestHeader "Content-Type", " text/html; charset=utf-8"
+	else
+		xmlHttp.setRequestHeader "Content-Type", " text/html"
+	end if
+ if fv = empty then
+   xmlHttp.Send
+ else
+   xmlHttp.Send fv
+ end if
+ txtData = xmlHttp.responseText
+ htmlData = xmlHttp.responsebody
+	if output = "html" then
+		lwGetHTTP = htmlData
+	else
+		lwGetHTTP = txtData
+	end if
+End Function
+
+</script>
+</job>
