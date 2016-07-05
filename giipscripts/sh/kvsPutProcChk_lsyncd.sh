@@ -7,7 +7,7 @@ lssn="{{lssn}}"
 # User Variables ===============================================
 factor="PROCCHK-LSYNCD"
 valueJSON=`ps -ef | grep lsyncd | awk '{print ",{\"UID\":\""$1"\",\"PID\":"$2",\"TIME\":\""$7"\",\"PROC\":\""$8"\",\"CMD\":\""$9" "$10" "$11" "$12" "$13"\"}"}'`
-valueJSON="{\"PROCCHK\":[ $valueJSON ]}" | sed -e "s/\[ ,/\[ /g"
+valueJSON=`echo "{\"PROCCHK\":[ $valueJSON ]}" | sed -e "s/\[ ,/\[ /g"`
 #echo -e $valueJSON
 
 # Send to KVSAPI Server =========================================
