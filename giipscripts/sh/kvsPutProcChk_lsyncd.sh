@@ -6,13 +6,16 @@ lssn="{{lssn}}"
 
 # User Variables ===============================================
 factor="PROCCHK-LSYNCD"
-valueJSON=`ps -ef | grep lsyncd | awk '{print ",{\"UID\":\""$1"\",\"PID\":"$2",\"TIME\":\""$7"\",\"PROC\":\""$8"\",\"CMD\":\""$9" "$10" "$11" "$12" "$13"\"}"}'`
-valueJSON=`echo "{\"PROCCHK\":[ $valueJSON ]}" | sed -e "s/\[ ,/\[ /g"`
+CntProc=`ps -ef | grep lsyncd | grep -v grep | wc -l`
+valueJSON=`ps -ef | grep lsyncd | grep -v grep | awk '{print ",{\"UID\":\""$1"\",\"PID\":"$2",\"TIME\":\""$7"\",\"PROC\":\""$8"\",\"CMD\":\""$9" "$10" "$11" "$12" "$13"\"}"}'`
+valueJSON=`echo "{\"PROCCNT\":$CntProc,\"PROCCHK\":[ $valueJSON ]}" | sed -e "s/\[ ,/\[ /g"`
 #echo -e $valueJSON
 
 # Send to KVSAPI Server =========================================
 qs="sk=$sk&type=lssn&key=$lssn&factor=$factor&value=$valueJSON"
-wget "http://giip.littleworld.net/API/kvs/put?$qs" -O "giipapi.log"
+if [ $CntProc > 0 ]; then
+    wget "http://giip.littleworld.net/API/kvs/put?$qs" -O "giipapi.log"
+fi
 
 rm -f giipapi.log
 rm -f put?*
