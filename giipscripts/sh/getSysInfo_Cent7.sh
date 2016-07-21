@@ -23,7 +23,7 @@ cpunum=`cat /proc/cpuinfo | grep processor | wc -l`
 
 # Send to API Server =========================================
 qs="at=$at&lssn=$lssn&hn=$hn&mf=$mf&cpuname=$cpuname&cpunum=$cpunum&mem=$mem&os=$os&mfsn=$mfsn"
-APIURL="http://giip.littleworld.net/API/LSvrInput_temp.asp?$qs"
+APIURL="http://giip.littleworld.net/API/lsvr/update?$qs"
 wget "$APIURL" -O giipAPISYS.txt
 
 # Check CPU Usage ===============================================
