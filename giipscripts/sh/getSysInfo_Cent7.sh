@@ -14,7 +14,7 @@ mf=`dmidecode --type 1 |grep 'Product Name'`
 mfsn=`dmidecode --type 1 |grep 'Serial'`
 cpuname=`cat /proc/cpuinfo  | grep 'model name' | awk -F\: 'NR==1 {print $2}'`
 echo "CPU : $cpuname "
-os=`head -n 1 /etc/issue`
+os=`cat /etc/redhat-release`
 echo "OSver. : $os"
 mem=`free -mt | awk '/Mem/{print $2}'`
 #mem=`expr $(($mem*1024*1024))`
