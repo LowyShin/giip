@@ -31,7 +31,9 @@ do
 	if [ $i -gt 0 ]; then
 		valueJSON="$valueJSON, "
 	fi
-	valueJSON="$valueJSON {\"Filesystem\":\"${arydffs[i]}\", \"Type\":\"${arydfty[i]}\", \"1024-blocks\":${arydfbl[i]}, \"Used\":${arydfus[i]}, \"Available\":${arydfav[i]}, \"Capacity\":\"${arydfca[i]}\", \"Mounted on\":\"${arydfmo[i]}\"}"
+	if [ $arydfbl[i] -gt 0 ]; then
+		valueJSON="$valueJSON {\"Filesystem\":\"${arydffs[i]}\", \"Type\":\"${arydfty[i]}\", \"1024-blocks\":${arydfbl[i]}, \"Used\":${arydfus[i]}, \"Available\":${arydfav[i]}, \"Capacity\":\"${arydfca[i]}\", \"Mounted on\":\"${arydfmo[i]}\"}"
+	fi
 done
 valueJSON="$valueJSON ] }"
 #echo -e $valueJSON
