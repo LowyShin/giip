@@ -42,4 +42,3 @@ qs="sk=$sk&type=lssn&key=$lssn&factor=$factor&value=$valueJSON"
 wget "http://giip.littleworld.net/API/kvs/put?$qs" -O giipAPIRst.log
 
 rm -f giipAPIRst.log
-
