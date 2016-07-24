@@ -17,7 +17,7 @@ dns=$(sed -e '/^$/d' /etc/resolv.conf | awk '{if (tolower($1)=="nameserver") pri
 
 # Send to API Server =========================================
 qs="at=$at&lssn=$lssn&gw=$gw&dns=$dns&ii=$ii"
-APIURL="http://giip.littleworld.net/API/LSvrNICInfoInputLinuxV141120.asp?$qs"
+APIURL="http://giip.littleworld.net/API/lsvr/nic/update/linux?$qs"
 APIURL=`echo "$APIURL" |tr -d '\b\r'`
 APIURL=`echo "$APIURL" |tr -d '\b\r'`
 APIURL=`echo "$APIURL" |tr -d '\b\r'`
