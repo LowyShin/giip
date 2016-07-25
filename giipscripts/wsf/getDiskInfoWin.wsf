@@ -11,20 +11,28 @@ Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\CIMV2")
 ' Logical Disk Drive ====================================================
 Set colItems = objWMIService.ExecQuery( _
     "SELECT * FROM Win32_LogicalDisk",,48) 
+obi = 0
 For Each objItem in colItems 
 	if at <> empty and lsSn <> empty then
-		fv = "at=" & at & "&lsSn=" & lsSn & _
-			"&did=" & objItem.DeviceID & _
-			"&ddesc=" & objItem.Description & _
-			"&vn=" & objItem.VolumeName & _
-			"&fs=" & objItem.FileSystem & _
-			"&fr=" & objItem.FreeSpace & _
-			"&ds=" & objItem.Size
-		lwURL = "http://giip.littleworld.net/API/LSvrDiskStatInput.asp?" & fv
-		lwHTTPRst = lwGetHTTP (lwURL, "GET", "", "utf-8", "text")
+		' Put KVS 
+		if obi > 0 and fvKVS <> empty then
+			fvKVS = fvKVS & ","
+		end if
+		fvKVS = fvKVS & "{""DeviceID"":""" & objItem.DeviceID & """" & _
+			", ""Description"":""" & objItem.Description & """" & _
+			", ""VolumeName"":""" & objItem.VolumeName & """" & _
+			", ""FileSystem"":""" & objItem.FileSystem & """" & _
+			", ""Size"":""" & objItem.Size & """" & _
+			", ""FreeSpace"":""" & objItem.FreeSpace & """}"
+		obi = obi + 1	
 	end if
-	
 Next
+' Put KVS 
+fv = "sk=" & at & "&type=lssn&key=" & lsSn & _
+	"&factor=DISKUSAGE" & _
+	"&value=[" & fvKVS & "]"
+lwURL = "http://giip.littleworld.net/API/kvs/put?" & fv
+lwHTTPRst = lwGetHTTP (lwURL, "GET", "", "utf-8", "text")
 
 Function lwGetHTTP(url, meth, fv, charset, output)
  Dim xmlHttp
