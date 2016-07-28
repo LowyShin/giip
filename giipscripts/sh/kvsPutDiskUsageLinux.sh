@@ -29,7 +29,7 @@ ci="0"
 for i in "${!array[@]}"
 do
 	if [ ${arydfbl[i]} -gt 0 ]; then
-		if [ ${#valueJSON}} -gt 0 ]; then
+		if [ ${#valueJSON} -gt 0 ]; then
 			valueJSON="$valueJSON, "
 		fi
 		valueJSON="$valueJSON {\"Filesystem\":\"${arydffs[i]}\", \"Type\":\"${arydfty[i]}\", \"1024-blocks\":${arydfbl[i]}, \"Used\":${arydfus[i]}, \"Available\":${arydfav[i]}, \"Capacity\":\"${arydfca[i]}\", \"Mounted on\":\"${arydfmo[i]}\"}"
