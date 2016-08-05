@@ -1,0 +1,33 @@
+Function lwGetHTTP(lwURL, lwMeth, lwfv, lwCharset, lwOutType)
+	Dim xmlHttp
+	Set xmlHttp = CreateObject("MSXML2.serverXMLHTTP")
+	xmlHttp.Open lwMeth, lwURL, False
+	if charset = "utf-8" then
+		if lwMeth = "POST" then
+			xmlhttp.setRequestHeader "Content-Type", " text/html; charset=utf-8; application/x-www-form-urlencoded"
+		else
+			xmlHttp.setRequestHeader "Content-Type", " text/html; charset=utf-8"
+		end if
+	else
+		if lwMeth = "POST" then
+			xmlhttp.setRequestHeader "Content-Type", " text/html; application/x-www-form-urlencoded"
+		else
+			xmlHttp.setRequestHeader "Content-Type", " text/html"
+		end if
+	end if
+
+	if lwFv = empty then
+		xmlHttp.Send
+	else
+		xmlHttp.Send lwFv
+	end if
+
+	txtData = xmlHttp.responseText
+	htmlData = xmlHttp.responsebody
+	if lwOutType = "html" then
+		lwGetHTTP = htmlData
+	else
+		lwGetHTTP = txtData
+	end if
+End Function
+
