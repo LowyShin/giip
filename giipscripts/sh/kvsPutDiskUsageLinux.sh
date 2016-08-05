@@ -6,40 +6,18 @@ lssn="{{lssn}}"
 
 # User Variables ===============================================
 factor="DISKUSAGE"
-value=`df -PaT | grep '/' | awk '{print $6}'`
-
-dffs=`df -PaT | grep '/' | awk '{print $1}'`
-dfty=`df -PaT | grep '/' | awk '{print $2}'`
-dfbl=`df -PaT | grep '/' | awk '{print $3}'`
-dfus=`df -PaT | grep '/' | awk '{print $4}'`
-dfav=`df -PaT | grep '/' | awk '{print $5}'`
-dfca=`df -PaT | grep '/' | awk '{print $6}'`
-dfmo=`df -PaT | grep '/' | awk '{print $7}'`
-
-arydffs=(${dffs//'\n'/ })
-arydfty=(${dfty//'\n'/ })
-arydfbl=(${dfbl//'\n'/ })
-arydfus=(${dfus//'\n'/ })
-arydfav=(${dfav//'\n'/ })
-arydfca=(${dfca//'\n'/ })
-arydfmo=(${dfmo//'\n'/ })
-
-array=(${value//'\n'/ })
-ci="0"
-for i in "${!array[@]}"
-do
-	if [ ${arydfbl[i]} -gt 0 ]; then
-		if [ ${#valueJSON} -gt 0 ]; then
-			valueJSON="$valueJSON,"
-		fi
-		valueJSON="$valueJSON {\"Filesystem\":\"${arydffs[i]}\", \"Type\":\"${arydfty[i]}\", \"1024-blocks\":${arydfbl[i]}, \"Used\":${arydfus[i]}, \"Available\":${arydfav[i]}, \"Capacity\":\"${arydfca[i]}\", \"Mounted on\":\"${arydfmo[i]}\"}"
-		ci=$i
-	fi
-done
-valueJSON="{\"df -PaT\":[$valueJSON] }"
+AttribCnt=`df -PaT | grep '/' | grep -v '0        0' | wc -l`
+valueJSON=`df -PaT | grep '/' | grep -v '0        0' | awk '{print ",{\"Filesystem\":\""$1"\", \"Type\":\""$2"\", \"1024-blocks\":"$3", \"Used\":"$4", \"Available\":"$5", \"Capacity\":\""$6"\", \"Mounted on\":\""$7"\"}"}'`
+valueJSON=`echo "{\"$factor\":$AttribCnt,\"DATA\":[ $valueJSON ]}" | sed -e "s/\[ ,/\[ /g"`
 #echo -e $valueJSON
+
 # Send to KVSAPI Server =========================================
 qs="sk=$sk&type=lssn&key=$lssn&factor=$factor&value=$valueJSON"
-wget "http://giip.littleworld.net/API/kvs/put?$qs" -O giipAPIRst.log
+lwAPIURL="https://secure.littleworld.net/API/kvs/kvsput.asp"
+if [ $AttribCnt > 0 ]; then
+	curl -w '\n' "$lwAPIURL" --data "$qs" -XPOST
+fi
 
-rm -f giipAPIRst.log
+rm -f giipapi.log
+rm -f put?*
+rm -f 0
