@@ -9,7 +9,7 @@ lssn="{{lssn}}"
 factor="KVM"
 Attrib="List"
 DataCnt=`virsh list --all | grep [0-9] | wc -l`
-valueJSON=`virsh list --all | grep [0-9] | awk '{print ",{\"ID\":\""$1"\", \"Name\":\""$2"\", \"State\":\""$3"\"}"}'`
+valueJSON=`virsh list --all | grep [0-9] | awk '{print ",{\"ID\":\""$1"\", \"Name\":\""$2"\", \"State\":\""$3" "$4"\"}"}'`
 valueJSON=`echo "{\"$factor-$Attrib\":$DataCnt,\"DATA\":[ $valueJSON ]}" | sed -e "s/\[ ,/\[ /g"`
 #echo -e $valueJSON
 
