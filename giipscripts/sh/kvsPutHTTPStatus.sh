@@ -14,7 +14,7 @@ Attrib="giip"
 factor="HTTPStatus"
 {{CustomVariables}}
 DataCnt=1
-valueJSON=`curl -LI $lwURL -o /dev/null -w '%{http_code}\n' -s`
+valueJSON=`curl -LI $lwURL --max-time 5 -o /dev/null -w '%{http_code}\n' -s`
 valueJSON=`echo "{\"$factor-$Attrib\":$lwURL,\"STATUS\":$valueJSON}" | sed -e "s/\[ ,/\[ /g"`
 #echo -e $valueJSON
 
