@@ -15,7 +15,7 @@ valueJSON=`echo "{\"$factor\":$AttribCnt,\"DATA\":[ $valueJSON ]}" | sed -e "s/\
 qs="sk=$sk&type=lssn&key=$lssn&factor=$factor&value=$valueJSON"
 lwAPIURL="https://secure.littleworld.net/API/kvs/kvsput.asp"
 if [ $AttribCnt > 0 ]; then
-	curl -w '\n' "$lwAPIURL" --data "$qs" -XPOST
+	curl -k -w '\n' "$lwAPIURL" --data "$qs" -XPOST
 fi
 
 rm -f giipapi.log
