@@ -22,7 +22,7 @@ valueJSON=`echo "{\"$factor-$Attrib\":$lwURL,\"STATUS\":$valueJSON}" | sed -e "s
 qs="sk=$sk&type=lssn&key=$lssn&factor=$factor-$Attrib&value=$valueJSON"
 lwAPIURL="https://secure.littleworld.net/API/kvs/kvsput.asp"
 if [ $DataCnt > 0 ]; then
-	curl -w '\n' "$lwAPIURL" --data "$qs" -XPOST
+	curl -k -w '\n' "$lwAPIURL" --data "$qs" -XPOST
 fi
 
 rm -f giipapi.log
