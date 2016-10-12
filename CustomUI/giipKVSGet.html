@@ -1,0 +1,75 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>giip Client</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<table id="location" border='1'>
+    <tr>
+        <th>lsSn</th>
+        <th>HostName</th>
+        <th>Label</th>
+        <th>CPU</th>
+        <th>Memory</th>
+        <th>OS</th>
+        <th>IP</th>
+    </tr>
+</table>
+
+<script>
+
+var giipAPI = "http://devgiip.littleworld.net/api/lsvr/list?jsoncallback=?"
+
+$(document).ready(function(){
+
+    jQuery.support.cors = true;
+
+    $.ajax(
+    {
+        type: "GET",
+        url: giipAPI,
+		data: "sk=<Secret Key>&otype=json",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        cache: false,
+        success: function (data) {
+
+            console.log("success");
+            
+        var trHTML = '';
+                
+        $.each(data.items, function (i, item) {
+            
+            trHTML += '<tr>';
+            trHTML += '<td>' + item.LSLSSn + '</td>';
+            trHTML += '<td>' + item.LSHostName + '</td>';
+            trHTML += '<td>' + item.LSUSage + '</td>';
+            trHTML += '<td>' + item.LSSpecCPUS + '</td>';
+            trHTML += '<td>' + item.LSSpecRAMGB + '</td>';
+            trHTML += '<td>' + item.LSOSVer + '</td>';
+            trHTML += '<td>' + item.LSNIFGlobal + '</td>';
+            trHTML += '</tr>';
+        });
+        
+        $('#location').append(trHTML);
+        
+        },
+        
+        error: function (msg) {
+            
+            console.log(msg.responseText);
+        }
+    });
+})
+
+</script>
+
+</body>
+</html>
