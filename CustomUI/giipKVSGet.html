@@ -10,16 +10,14 @@
 </head>
 
 <body>
-
+	<h2>giip KVS Get API Sample</h2>
 <table id="location" border='1'>
     <tr>
         <th>lsSn</th>
-        <th>HostName</th>
-        <th>Label</th>
-        <th>CPU</th>
-        <th>Memory</th>
-        <th>OS</th>
-        <th>IP</th>
+        <th>Factor</th>
+        <th>Attib</th>
+        <th>Value</th>
+        <th>Regdt</th>
     </tr>
 </table>
 
@@ -48,13 +46,11 @@ $(document).ready(function(){
         $.each(data.items, function (i, item) {
             
             trHTML += '<tr>';
-            trHTML += '<td>' + item.LSLSSn + '</td>';
-            trHTML += '<td>' + item.LSHostName + '</td>';
-            trHTML += '<td>' + item.LSUSage + '</td>';
-            trHTML += '<td>' + item.LSSpecCPUS + '</td>';
-            trHTML += '<td>' + item.LSSpecRAMGB + '</td>';
-            trHTML += '<td>' + item.LSOSVer + '</td>';
-            trHTML += '<td>' + item.LSNIFGlobal + '</td>';
+            trHTML += '<td>' + item.kKey + '</td>';
+            trHTML += '<td>' + item.kFactor + '</td>';
+            trHTML += '<td>' + item.kAttrib + '</td>';
+            trHTML += '<td>' + item.kVal + '</td>';
+            trHTML += '<td>' + item.clRegdt + '</td>';
             trHTML += '</tr>';
         });
         
