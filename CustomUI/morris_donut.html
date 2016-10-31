@@ -1,0 +1,103 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<META HTTP-EQUIV="refresh" CONTENT="30;URL=giip_Dashboard.html" >
+<title>giip KVS Client</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+<!-- script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+</head>
+
+<body>
+	<h2>Server Activate statistics</h2>
+
+
+<!-- Morris Graph -->
+<div id="donut-example"></div>
+
+<script lanuguage="Javascript">
+var giipData = [
+    {label: "Process Status", value: 0}
+  ];
+
+var giipGraph = Morris.Donut({
+  element: 'donut-example',
+  data : giipData
+});
+</script>
+
+<center>
+<table id="location" border="1" width="300">
+    <tr>
+        <th>Usage</th>
+        <th>process <BR> status</th>
+    </tr>
+</table>
+</center>
+
+<script>
+
+var giipAPI = "http://giip.littleworld.net/api/kvs/trg/statistics?jsoncallback=?";
+
+$(document).ready(function(){
+
+    jQuery.support.cors = true;
+
+    $.ajax(
+    {
+        type: "GET",
+        url: giipAPI,
+        data: "sk=<secret key>&factor=PROCCHK&attrib=PROCCNT",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        cache: false,
+        success: function (data) {
+
+            console.log("success");
+            
+        var trHTML = '';
+                
+        $.each(data.items, function (i, item) {
+            
+            trHTML += '<tr>';
+            trHTML += '<td align="center">' + item.LSUsage + '</td>';
+		if (item.kValMax == "1"){
+	            trHTML += '<td align="center" bgcolor="lightgreen"> On </td>';
+		    grCol = '#90EE90';
+		}else{
+	            trHTML += '<td align="center" bgcolor="gray"> Off </td>';
+		    grCol = '#D3D3D3';
+		}
+            trHTML += '</tr>';
+
+		// for morris graph
+		giipData.push({
+		    label: item.LSUsage,
+		    value: 1,
+		    color: grCol
+		});
+		giipGraph.setData(giipData);
+
+        });
+        
+        $('#location').append(trHTML);
+
+    },
+        
+        error: function (msg) {
+            
+            console.log(msg.responseText);
+        }
+    });
+})
+
+</script>
+
+</body>
+</html>
