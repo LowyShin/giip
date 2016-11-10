@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>giip Client</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<select id="giipSel01">
+</select>
+
+<script>
+var giipAPI = "http://giip.littleworld.net/API/CQE/queue/listbylssn?jsoncallback=?"
+$(document).ready(function(){
+    jQuery.support.cors = true;
+    $.ajax(
+    {
+        type: "GET",
+        url: giipAPI,
+		data: "sk=<Secret Key>&lssn=<lssn>&gk=sk&otype=json",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        cache: false,
+        success: function (data) {
+            console.log("success");
+        var selHTML = '';
+        $.each(data.items, function (i, item) {
+            selHTML += '<option value=' + item.mslsn + '>' + item.msName + '</option>';
+        });
+          document.getElementById("giipSel01").innerHTML = selHTML;
+        },
+        error: function (msg) {
+            console.log(msg.responseText);
+        }
+    });
+})
+</script>
+
+</body>
+</html>
