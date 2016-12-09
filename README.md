@@ -4,6 +4,10 @@ Global Infrastructure Integration Platform
 http://giip.littleworld.net
 
 ### Service Overview
+
+You can see [Wiki page](https://github.com/LowyShin/giip/wiki) for more information.
+
+
 Cloud environment has become more common. I believe that most of SE has experienced cloud services, although Cloud services have to be used additionally using current Legacy equipment most of the times. Even it makes SE take more time to learn how to use complicated user portal by using multiple cloud services.
 
 
