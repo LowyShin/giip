@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>giip KVS to Table using Tabulator.</title>
+
+	<link rel="stylesheet" href="jquery/jquery-ui-themes-1.11.4/themes/smoothness/jquery-ui.css">
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="bootstrap/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="tabulator/tabulator.css">
+
+	<script type="text/javascript" src="jquery/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="jquery/ui/1.11.4/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="tabulator/tabulator.js"></script>
+</head>
+<body>
+
+<script language=javascript>
+
+	var lwsk = "<your secret key>";
+	var lwkey = "<your logical server number>";
+	var lwfactor = "CONNECTIONCOUNT";
+	var lwAPIURL = "http://giip.littleworld.net/api/kvs/Factor/get?sk=" + lwsk + "&type=cgsn&key=" + lwkey + "&factor=" + lwfactor+ "&otyp=json" ;
+
+</script>
+
+<section>
+	<header> Service CONNECTION COUNT </header>
+	<div id="example-table"></div>
+	<script type="text/javascript">
+
+		//Build Tabulator
+		$("#example-table").tabulator({
+		    height:"100%",
+		    fitColumns:true,
+		    ajaxURL:lwAPIURL,
+		    columns:[
+		        {title:"Hostname", field:"hostname", sorter:"string", width:150},
+		        {title:"lssn", field:"key", sorter:"number", align:"right", width:80},
+		        {title:"log date", field:"regdt", sorter:"date", width:160},
+		        {title:"ESTABLISHED", field:"ESTABLISHED", sorter:"number", align:"right", width:120},
+		        {title:"TIME_WAIT", field:"TIME_WAIT", sorter:"number", align:"right", width:120},
+		    ],
+		});
+
+		//trigger AJAX load on "Load Data via AJAX" button click
+		$("#ajax-trigger").click(function(){
+			$("#example-table").tabulator("setData");
+		});
+	</script>
+
+	<p>AJAX Data Loading <span> - for full documentation visit <a href="http://olifolkerd.github.io/tabulator/docs/#ajax">http://olifolkerd.github.io/tabulator/docs/#ajax</a></span></p>
+	<p>Data can be loaded into the table from a remote URL using a JSON formatted string.</p>
+
+</section>
+</body>
+</html>
