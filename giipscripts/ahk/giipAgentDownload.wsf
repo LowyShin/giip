@@ -1,0 +1,145 @@
+<job id="giipAgentDownloadWin.v1.00">
+<script language="VBScript">
+' -------------------------------------------------------------
+' Authorized by Lowy at 20151108
+' -------------------------------------------------------------
+' -------------------------------------------------------------
+' Initialize
+On Error Resume Next
+
+' User Variables (replace your environment)
+sk = "0f10a4f7c9e000b2a41291160ede408b"
+
+' -------------------------------------------------------------
+' System Variables
+lwURLAPI = "http://giip.littleworld.net/api/agent/getbylabel?op=giipAgentwin&sk={{sk}}&lb={{hn}}"
+lwURLChkAgent = "http://giip.littleworld.net/api/agent/chkver?op=giipAgentwin&sk={{sk}}&lb={{hn}}"
+lwPath = "."
+
+' -------------------------------------------------------------
+' Processing Variables
+Set oWshShell = CreateObject("WScript.Shell")
+Set lwFso = WScript.CreateObject("Scripting.FileSystemObject")
+strScriptPath = Replace(WScript.ScriptFullName,WScript.ScriptName,"")
+
+hn = oWshShell.ExpandEnvironmentStrings( "%COMPUTERNAME%" )
+lwPath= oWshShell.CurrentDirectory
+lwURLAPI = replace(lwURLAPI, "{{sk}}", sk)
+lwURLAPI = replace(lwURLAPI, "{{lssn}}", lsSn)
+lwURLAPI = replace(lwURLAPI, "{{hn}}", hn)
+
+' Get & Execute Scripts
+
+' Check version of server
+lwVerSvr = lwGetHTTP (lwURLChkAgent, "GET", "", "ansi", "text")
+' Get local script version
+
+strOpenFile = lwPath & "\giipAgent-" & hn & ".wsf"
+if lwFso.FileExists(strOpenFile) then
+	Set objTextStream = lwFso.OpenTextFile(strOpenFile, 1)
+	lwVerLocal = objTextStream.ReadLine
+	objTextStream.close
+end if
+
+' if old, Download Script
+if lwVerSvr <> lwVerLocal and lwVerSvr <> empty then
+	lwHTTPRst = lwGetHTTP (lwURLAPI, "GET", "", "ansi", "text")
+	lwLogFileWrite lwPath, "giipQueAgent.log", "[" & SetDtToStr(now(), "YYYY/MM/DD HH24:MI:SS") & "] Download giipAgent... " & lwURLAPI & vbCRLF
+
+	if lwHTTPRst <> empty then
+		lwFileNameAgent = "giipAgent-" & hn & ".wsf"
+		if lwFso.FileExists(lwPath & "\" & lwFileNameAgent) then
+			lwFso.DeleteFile(lwPath & "\" & lwFileNameAgent)
+		end if
+		lwLogFileWrite lwPath, lwFileNameAgent, lwHTTPRst
+		lwLogFileWrite lwPath, "giipQueAgent.log", "[" & SetDtToStr(now(), "YYYY/MM/DD HH24:MI:SS") & "] giipAgent update success.   " & vbCRLF
+	else
+		lwLogFileWrite lwPath, "giipQueAgent.log", "[" & SetDtToStr(now(), "YYYY/MM/DD HH24:MI:SS") & "] Error occured downloading giipAgent!! " & vbCRLF
+	end if
+end if
+
+Sub ExecQue(lwPath, lwText)
+	Dim lwFso, sAbsFileName, DT, sDT
+	lwTmpFileName = "giipAgent-" & hn & ".wsf"
+	sAbsFileName = lwPath & "\" & lwTmpFileName
+	lwTextSetLog = lwTmpFileName
+
+	if lwFso.fileexists(sAbsFileName) then
+		lwFso.DeleteFile(sAbsFileName)
+	end if
+	if lwFso.fileexists(lwBatTmp) then
+		lwFso.DeleteFile(lwBatTmp)
+	end if
+	' save Temp File
+	lwLogFileWrite lwPath, lwTmpFileName, lwText
+
+      Set lwFso = Nothing
+End Sub
+
+Sub lwLogFileWrite(sPath, sFileName, sContent)
+      if lwFso.FileExists(sPath & "\" & sFileName) then
+            set lwLogFile = lwFso.opentextfile(sPath & "\" & sFileName, 8, true)
+      else
+            set lwLogFile =  lwFso.createtextfile(sPath & "\" & sFileName, true)
+      end if
+
+      lwLogFile.Write sContent
+      lwLogFile.close
+End Sub
+
+Function lwGetHTTP(url, meth, fv, charset, output)
+ Dim xmlHttp
+ Set xmlHttp = CreateObject("MSXML2.serverXMLHTTP")
+ xmlHttp.Open meth, url, False
+	if charset = "utf-8" then
+		xmlHttp.setRequestHeader "Content-Type", " text/html; charset=utf-8"
+	else
+		xmlHttp.setRequestHeader "Content-Type", " text/html"
+	end if
+ 'xmlHttp.setRequestHeader "Content-Length", "length"
+ if fv = empty then
+   xmlHttp.Send
+ else
+   xmlHttp.Send fv
+ end if
+ txtData = xmlHttp.responseText
+ htmlData = xmlHttp.responsebody
+	if output = "html" then
+		lwGetHTTP = htmlData
+	else
+		lwGetHTTP = txtData
+	end if
+End Function
+
+Function SetDtToStr(dt, date_type)
+
+      Dim mydate
+      date_type = Ucase(date_type)
+      if isdate(dt) then
+
+            hour12 = hour(dt)
+            if cint(hour12) > 12 then
+                  hour12 = hour12 - 12
+            end if
+            mydate = replace (date_type, "YYYY", year(dt))
+            mydate = replace (mydate, "YY", right(year(dt), 2))
+            mydate = replace (mydate, "MM", right("0" & month(dt),2))
+            mydate = replace (mydate, "DD", right("0" & day(dt),2))
+            mydate = replace (mydate, "HH24", right("0" & hour(dt),2))
+            mydate = replace (mydate, "HH", hour12)
+            mydate = replace (mydate, "MI", right("0" & minute(dt),2))
+            mydate = replace (mydate, "SS", right("0" & second(dt),2))
+
+      else
+     
+            mydate = "1999/01/01 00:00:00"
+     
+      end if
+
+      SetDtToStr = mydate
+
+End Function
+
+</script>
+</job>
+
