@@ -8,7 +8,7 @@
 On Error Resume Next
 
 ' User Variables (replace your environment)
-sk = "0f10a4f7c9e000b2a41291160ede408b"
+sk = "<Your Secret Key>"
 
 ' -------------------------------------------------------------
 ' System Variables
