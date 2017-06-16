@@ -1,7 +1,5 @@
 # giip Variables 
-# (giip의 Service Group 메뉴에 있는 서버에 할당한 그룹 코드)
 $sk = "{{sk}}"
-# 서버 번호(서버 상세 정보 위에 있음)
 $lssn = {{lssn}}
 
 # OS Info
@@ -13,7 +11,7 @@ $CPUInfo = Get-WMiObject Win32_processor | Select-Object Name, NumberOfCores, Nu
 # Memory Info 
 $PhysicalMemory = Get-WmiObject CIM_PhysicalMemory | Measure-Object -Property capacity -sum | % {[math]::round(($_.sum / 1MB),2)} 
 
-# JSON 변환
+# Convert and merge to JSON
 $output =@{
             'OS' = $OSInfo.Caption;
             'CPU' = $CPUInfo.Name;
@@ -23,7 +21,7 @@ $output =@{
           } 
 $object = New-Object -TypeName PSObject -Property $output | ConvertTo-Json
 
-# giip KVS로 던지기
+# Send to giip KVS
 $qs = "sk=$sk&type=lssn&key=$lsSn&factor=SysInfo&value=$object"
 $lwURL = "http://giip.littleworld.net/API/kvs/kvsput.asp"
 Invoke-RestMethod -Uri $lwURL -Method POST -Body $qs
