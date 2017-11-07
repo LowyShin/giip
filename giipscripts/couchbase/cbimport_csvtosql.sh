@@ -56,7 +56,7 @@ done < "$UFile"
 # Check Result
 
 # Set result for KVS
-valueJSON=`echo "{\"ImportFile\":\"$DataFile\"}" | sed -e "s/\[ ,/\[ /g"`
+valueJSON=`echo "{\"ImportFile\":\"$UFile\"}" | sed -e "s/\[ ,/\[ /g"`
 #echo $valueJSON
 
 # Send to KVSAPI Server =========================================
