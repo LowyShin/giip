@@ -1,0 +1,147 @@
+#[00][Win]SysStatGetWin01
+
+
+<jod id="giipSysStatGetWin.v0.20">
+<script language="VBScript">
+'----------------------------------
+'Authorized by Lowy at 20171106
+'v0.2 (171106)
+' - Created
+'  Log last number, and get next number of log
+'__________________________________
+'On Error Resume Next
+
+
+'System Variables =====================================================
+at = "{{sk}}"
+lsSn = {{lsssn}}
+
+
+Set oWshShell = CreateObject("WScript.Shell")
+lwPath= oWshShell.CurrentDirectory
+
+
+'0 initialize
+CPULoad = 0
+intTotalHealth = 0
+TotMem = 0
+TotDiskQueue = 0
+TotNetQueue = 0
+
+
+Set objCimv2 = GetObject("winmgmts:root\cimv2")
+Set objRefresher = CreateObject("WbemScripting.SWbemRefresher")
+Set objService = GetObject("winmgmts:{impersonationlevel=impersonate}!\Root\Cimv2")
+
+
+' 1. Get system data
+Set objInstance1 = objService.Get ("Win32_PerfRawData_PerfOS_Processor.Name='_Total'")
+N1 = objInstance1.PercentProcessorTime
+D1 = objInstance1.TimeStamp_Sys100NS
+
+
+CPULoadOrg = CDbl((N1 / D1) * 100)
+CPULoad = Round(CPULoadOrg, 2)
+
+
+Set objMemroy = objRefresher.AddEnum (objCimv2, "Win32_PerfFormattedData_PerfOS_Memory").ObjectSet
+Set objDiskQueue = objRefresher.AddEnum (objCimv2, "Win32_PerfFormattedData_PerfDisk_LogicalDisk").ObjectSet
+Set	objQueueLength		=		objRefresher.AddEnum		(obCimv2,
+"Win32_PerfFormattedData_PerfNet_ServerWorkQueues").ObjectSet
+
+
+objRefresher.Refresh
+
+
+For each intAvailableBytes in objMemory
+	TotMem = TotMem + intAvailableBytes.AvailableBytes
+Next
+For each intDiskQueue in objDiskQueue
+	TotDiskQueue = TotDiskQueue + intDiskQuere.CurrentDiskQueueLength
+Next
+For each intServerQueueLength in objQueueLength
+	TotNetQueue = TotNetQueue + intServerQueueLength.QueueLength
+Next
+
+
+' 2.2. Log to KVS
+factor = "SysStat"
+lwJSON = "{""CPU"":" & CPULoad & ",""MemUsage"":" & TotMem & ",""DiskQueue"":" & TotDiskQueue & ",""NetQueue"":"
+& TotNetQueue & "}"
+' Put KVS
+fv = "sk"=" & at & "&type=lssn&key=" & lsSn & _
+            "&factor=" & factor & _
+	    "&value=" & lwJSON
+lwURL = "http://giip.littleworld.net/API/kvs/kvsput.asp?" & fv
+
+
+lwHTTPRst = lwGetHTTP (lwURL, "GET", "", "utf-8", "text"
+
+
+
+
+' Clear
+Set oWshShell = Nothing
+
+
+' == Common functions ==
+' == Common functions ==
+Function lwGetHTTP(url, meth, fv, charset, output)
+Dim xmlHttp
+Set xmlHttp = CreateObject("MSXML2.serverXMLHTTP")
+xmlHttp.Open meth, url, False
+	if charset = "utf-8" then
+		xmlHttp.setequestHeader "Content-Type", " text/html; charset=utf-8"
+	else
+		xmlHttp.setRequestHeader "Cotent-Type", " text/html"
+	end if
+'xmlHttp.setRequestHeader "Content-Length", "length"
+if fv = empty then
+xmlHttp.Send
+else
+txtData = xmlHttp.responseText
+htmlData = xmlHttp.responsebody
+	if output = "html" then
+		lwGetHTTP = htmlData
+	else
+		lwGetHTTP = txtData
+	end if
+End Function
+
+
+Function SetDtToStr(dt, date_type)
+
+
+	Dim mydate
+	date_type = Ucase(date_type)
+	if isdate(dt) then
+
+
+		hour12 = hour(dt)
+		if cint(hour12) > 12 then
+			hour12 = hour12 - 12
+		end if
+		mydate = replace (date_type, "YYYY", year(dt))
+		mydate = replace (mydate, "YY", right(year(dt), 2))
+		mydate = replace (mydate, "MM", right("0" & month(dt),2))
+		mydate = replace (mydate, "DD", right("0" & day(dt),2))
+		mydate = replace (mydate, "HH24", right("0" & hour(dt),2))
+		mydate = replace (mydate, "HH", hour12)
+		mydate = replace (mydate, "MI", right("0" &minute(dt),2))
+		mydate = replace (mydate, "SS", right("0" &second(dt),2))
+
+	else
+	valueJSON=`echo
+"{\"factor\":\"$factor\",\"mslsn\":\"$mslsn\",\"lastline\":\"$lastline\",\"LineCntAll\":\"$LineCntAll\"}" | sed -e
+"s/\[,/\[/g"`
+	#Send to KVSAPI Server ====================================================
+	qs="sk=$sk&type=lssn&key=&lssn&factor=$factor&value=$valueJSON"
+	lwAPIURL="http://giip.littleworld.net/API/kvs/kvsput.asp"
+	if [ $CntList > 0 ]; then
+		curl -k -w '\n' "lwAPIURL" --data "$qs" -XPOST
+	fi
+
+
+rm -f giipapi.log
+rm -f put?*
+	
