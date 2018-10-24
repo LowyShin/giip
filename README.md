@@ -1,7 +1,7 @@
 # giip
 Global Infrastructure Integration Platform
 
-http://giip.littleworld.net
+http://giipweb.littleworld.net
 
 ### Service Overview
 
