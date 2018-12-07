@@ -19,6 +19,7 @@ if [ $uname = "Darwin" ];then
 	osname=`sw_vers -productName`
 	osver=`sw_vers -productVersion`
 	os="${osname} ${osver}"
+	os=`echo "$os" | sed -e "s/ /%20/g"`
 	if [ ${RESULT} != 0 ];then
 		brew install dos2unix
 	fi
