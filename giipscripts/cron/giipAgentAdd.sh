@@ -12,4 +12,4 @@ crontab -l
 # make file
 mkdir -p /usr/local/giip/scripts
 # download giip agent
-wget "http://giip.littleworld.net/api/agent/getbylabel?op=giipAgentlinux&sk=$sk&lb=$lb" -O /usr/local/giip/scripts/giipAgent.sh
+wget "http://giipweb.littleworld.net/api/agent/getbylabel?op=giipAgentlinux&sk=$sk&lb=$lb" -O /usr/local/giip/scripts/giipAgent.sh
