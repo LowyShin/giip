@@ -1,0 +1,77 @@
+<job id="lwCntFile">
+<script language="VBScript">
+'==============================================
+' Counting files on selected directory
+' Create by Lowy at 20190116
+' Initializing for giip Service
+' Change tpsn from giip notification service
+' User Variables ----------------------------------------------
+sk = "{{sk}}"
+lsSn = {{lssn}}
+
+CntFile = 0
+
+' if you put custom code the custom variables on giip queue configuration, it will be replaced below
+' do not remove comment code.
+' {{CustomVariables}}
+
+' =============================================
+' Uncomment and set below to Custom Variables at Que Management
+' Call lwCntFiles("D:\backup\lwMSPdb")
+'==============================================
+
+Sub lwCntFiles(sPath)
+	Dim lwFso, lwFolder, lwFile
+	Set lwFso = WScript.CreateObject("Scripting.FileSystemObject")
+	Set lwFolder = lwFso.GetFolder(sPath)
+	Set lwFiles = lwFolder.Files
+	For Each File In lwFiles
+		ModDate = File.DateLastModified
+		lwFileName = File.Name
+		lwFileSize = File.Size
+		CntFile = CntFile + 1
+	Next
+
+	sJSON = "{""Dir"":""" & sPath & """,""FileCount"":" & CntFile & "}" & vbCRLF
+	Call lwMSP_NS_APISend02 (at, tpsn, CntFile, UserData)
+
+  CntFile = 0
+  Set lwFile = Nothing
+	Set lwFolder = Nothing
+	Set lwFso = Nothing
+End Sub
+
+ Sub lwKVSPut(sk, lssn, factor, sJSON)
+ 	fv = "sk=" & sk & "&type=lssn&key=" & lssn & _
+   	"&factor=" & factor & "&value=" & sJSON
+ 	lwURL = "http://giipapi.littleworld.net/API/kvs/put?" & fv
+ 	lwHTTPRst = lwGetHTTP (lwURL, "GET", "", "utf-8", "text")	
+ End Sub
+ 
+ Function lwGetHTTP(url, meth, fv, charset, output)
+ Dim xmlHttp
+ Set xmlHttp = CreateObject("MSXML2.serverXMLHTTP")
+ xmlHttp.Open meth, url, False
+ 	if charset = "utf-8" then
+ 		xmlHttp.setRequestHeader "Content-Type", " text/html; charset=utf-8"
+ 	else
+ 		xmlHttp.setRequestHeader "Content-Type", " text/html"
+ 	end if
+ 	'xmlHttp.setRequestHeader "Content-Length", "length"
+ 	if fv = empty then
+ 	  xmlHttp.Send
+ 	else
+	  xmlHttp.Send fv
+	end if
+	txtData = xmlHttp.responseText
+	htmlData = xmlHttp.responsebody
+	if output = "html" then
+		lwGetHTTP = htmlData
+	else
+		lwGetHTTP = txtData
+	end if
+End Function
+
+
+</script>
+</job>
