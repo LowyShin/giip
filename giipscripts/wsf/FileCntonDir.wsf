@@ -14,6 +14,12 @@ CntFile = 0
 ' if you put custom code the custom variables on giip queue configuration, it will be replaced below
 ' do not remove comment code.
 ' {{CustomVariables}}
+' copy and paste on custom variables box and correct your environment.
+
+if sJSON = empty then
+	sJSON = "{""Dir"":""" & sPath & """,""FileCount"":" & CntFile & ",""mslsn"":{{mslsn}}}" & vbCRLF
+end if
+Call lwKVSPut (sk, lssn, factor, sJSON)
 
 ' =============================================
 ' Uncomment and set below to Custom Variables at Que Management
@@ -31,9 +37,6 @@ Sub lwCntFiles(sPath)
 		lwFileSize = File.Size
 		CntFile = CntFile + 1
 	Next
-
-	sJSON = "{""Dir"":""" & sPath & """,""FileCount"":" & CntFile & "}" & vbCRLF
-	Call lwMSP_NS_APISend02 (at, tpsn, CntFile, UserData)
 
   CntFile = 0
   Set lwFile = Nothing
