@@ -1,19 +1,24 @@
-<job id="giipAgentDownloadWin.v1.00">
+<job id="giipAgentDownloadWin.v1.01">
 <script language="VBScript">
 ' -------------------------------------------------------------
 ' Authorized by Lowy at 20151108
 ' -------------------------------------------------------------
+' Lowy 2019.02.12
+' Add logging point
+' change api URL
+' if logical server label same to hostname, you may not change hn variables
 ' -------------------------------------------------------------
 ' Initialize
 On Error Resume Next
 
 ' User Variables (replace your environment)
-sk = "<Your Secret Key>"
+sk = "<your secret key>"
+hn = "<your logical server label>"
 
 ' -------------------------------------------------------------
 ' System Variables
-lwURLAPI = "http://giip.littleworld.net/api/agent/getbylabel?op=giipAgentwin&sk={{sk}}&lb={{hn}}"
-lwURLChkAgent = "http://giip.littleworld.net/api/agent/chkver?op=giipAgentwin&sk={{sk}}&lb={{hn}}"
+lwURLAPI = "http://giipapi.littleworld.net/api/agent/getbylabel?op=giipAgentwin&sk={{sk}}&lb={{hn}}"
+lwURLChkAgent = "http://giipapi.littleworld.net/api/agent/chkver?op=giipAgentwin&sk={{sk}}&lb={{hn}}"
 lwPath = "."
 
 ' -------------------------------------------------------------
@@ -22,16 +27,26 @@ Set oWshShell = CreateObject("WScript.Shell")
 Set lwFso = WScript.CreateObject("Scripting.FileSystemObject")
 strScriptPath = Replace(WScript.ScriptFullName,WScript.ScriptName,"")
 
-hn = oWshShell.ExpandEnvironmentStrings( "%COMPUTERNAME%" )
+if hn = <your logical server label> or hn = empty or hn = "" then
+	hn = oWshShell.ExpandEnvironmentStrings( "%COMPUTERNAME%" )
+end if
 lwPath= oWshShell.CurrentDirectory
 lwURLAPI = replace(lwURLAPI, "{{sk}}", sk)
 lwURLAPI = replace(lwURLAPI, "{{lssn}}", lsSn)
 lwURLAPI = replace(lwURLAPI, "{{hn}}", hn)
+lwURLChkAgent = replace(lwURLChkAgent, "{{sk}}", sk)
+lwURLChkAgent = replace(lwURLChkAgent, "{{lssn}}", lsSn)
+lwURLChkAgent = replace(lwURLChkAgent, "{{hn}}", hn)
+lwFileNameLog = "giipAgent-" & hn & "-" & SetDtToStr(now(), "YYYYMMDD") & ".log"
+lwFileNameAgent = "giipAgent-" & hn & ".wsf"
 
 ' Get & Execute Scripts
 
 ' Check version of server
+lwLogFileWrite lwPath, lwFileNameLog,  "[" & SetDtToStr(now(), "YYYY/MM/DD HH24:MI:SS") & "]Check Agent Version..." & vbCRLF
 lwVerSvr = lwGetHTTP (lwURLChkAgent, "GET", "", "ansi", "text")
+lwLogFileWrite lwPath, lwFileNameLog,  "[" & SetDtToStr(now(), "YYYY/MM/DD HH24:MI:SS") & "]" & lwURLChkAgent & vbCRLF
+lwLogFileWrite lwPath, lwFileNameLog,  "[" & SetDtToStr(now(), "YYYY/MM/DD HH24:MI:SS") & "]" & lwVerSvr & vbCRLF
 ' Get local script version
 
 strOpenFile = lwPath & "\giipAgent-" & hn & ".wsf"
@@ -44,17 +59,16 @@ end if
 ' if old, Download Script
 if lwVerSvr <> lwVerLocal and lwVerSvr <> empty then
 	lwHTTPRst = lwGetHTTP (lwURLAPI, "GET", "", "ansi", "text")
-	lwLogFileWrite lwPath, "giipQueAgent.log", "[" & SetDtToStr(now(), "YYYY/MM/DD HH24:MI:SS") & "] Download giipAgent... " & lwURLAPI & vbCRLF
+	lwLogFileWrite lwPath, lwFileNameLog, "[" & SetDtToStr(now(), "YYYY/MM/DD HH24:MI:SS") & "] Download giipAgent... " & lwURLAPI & vbCRLF
 
 	if lwHTTPRst <> empty then
-		lwFileNameAgent = "giipAgent-" & hn & ".wsf"
 		if lwFso.FileExists(lwPath & "\" & lwFileNameAgent) then
 			lwFso.DeleteFile(lwPath & "\" & lwFileNameAgent)
 		end if
 		lwLogFileWrite lwPath, lwFileNameAgent, lwHTTPRst
-		lwLogFileWrite lwPath, "giipQueAgent.log", "[" & SetDtToStr(now(), "YYYY/MM/DD HH24:MI:SS") & "] giipAgent update success.   " & vbCRLF
+		lwLogFileWrite lwPath, lwFileNameLog, "[" & SetDtToStr(now(), "YYYY/MM/DD HH24:MI:SS") & "] giipAgent update success.   " & vbCRLF
 	else
-		lwLogFileWrite lwPath, "giipQueAgent.log", "[" & SetDtToStr(now(), "YYYY/MM/DD HH24:MI:SS") & "] Error occured downloading giipAgent!! " & vbCRLF
+		lwLogFileWrite lwPath, lwFileNameLog, "[" & SetDtToStr(now(), "YYYY/MM/DD HH24:MI:SS") & "] Error occured downloading giipAgent!! " & vbCRLF
 	end if
 end if
 
@@ -142,4 +156,3 @@ End Function
 
 </script>
 </job>
-
