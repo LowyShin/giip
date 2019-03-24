@@ -7,7 +7,7 @@ log_error                       = /var/log/mysql/mysql_log.err
 slow_query_log                  = ON
 slow_query_log_file             = /var/log/mysql/mysql_slow_queries.log
 long_query_time                 = 10
-tmpdir                          = /var/lib/mysql/tmp
+# tmpdir                          = /var/lib/mysql/tmp
 
 max_allowed_packet              = 256M
 max_connections                 = 400
@@ -35,7 +35,7 @@ max_heap_table_size             = 512M
 tmp_table_size                  = 512M
 max_tmp_tables                  = 300
 
-innodb_buffer_pool_size         = 11G  #80% of system memory?
+innodb_buffer_pool_size         = 11G
 innodb_log_file_size            = 2G
 #innodb_log_buffer_size         = 1G
 innodb_buffer_pool_instances    = 8
