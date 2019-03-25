@@ -1,3 +1,5 @@
+# giip tune for 64gb
+
 skip_name_resolve               = 1
 default_storage_engine          = InnoDB
 performance_schema              = 0
