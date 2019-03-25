@@ -10,7 +10,7 @@ long_query_time                 = 10
 # tmpdir                          = /var/lib/mysql/tmp
 
 max_allowed_packet              = 256M
-max_connections                 = 400
+max_connections                 = 512
 open_files_limit                = 10000
 wait_timeout                    = 120
 connect_timeout                 = 120
@@ -34,24 +34,30 @@ read_rnd_buffer_size            = 192K
 max_heap_table_size             = 512M
 tmp_table_size                  = 512M
 max_tmp_tables                  = 300
+sort_buffer_size                = 1M
+
+myisam_sort_buffer_size         = 64M
 
 innodb_buffer_pool_size         = 3G
 innodb_log_file_size            = 1G
-innodb_log_buffer_size         = 1G
+innodb_log_buffer_size          = 1G
+innodb_log_files_in_group       = 2
 innodb_buffer_pool_instances    = 8
-#innodb_file_format              = Barracuda
+#innodb_file_format             = Barracuda
 #innodb_max_dirty_pages_pct     = 0
-#innodb_io_capacity              = 1000
+#innodb_io_capacity             = 1000
 #innodb_io_capacity_max         = 600
 #innodb_flush_sync              = OFF
-#innodb_buffer_pool_dump_pct     = 80
-#innodb_flush_log_at_trx_commit  = 0 #or 2
-#sync_binlog                     = 0
-#innodb_flush_method             = O_DIRECT
-#innodb_thread_concurrency       = 0
-#innodb_read_ahead_threshold     = 8
-#innodb_lru_scan_depth           = 100
+#innodb_buffer_pool_dump_pct    = 80
+#sync_binlog                    = 0
+innodb_flush_method             = O_DIRECT
+innodb_flush_log_at_trx_commit  = 0 #or 2
+#innodb_thread_concurrency      = 0
+#innodb_read_ahead_threshold    = 8
+#innodb_lru_scan_depth          = 100
+innodb_additional_mem_pool_size = 20M
 
-#concurrent_insert               = 1
-#local_infile                    = 0
-#group_concat_max_len            = 102400
+
+#concurrent_insert              = 1
+#local_infile                   = 0
+#group_concat_max_len           = 102400
