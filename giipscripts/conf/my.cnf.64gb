@@ -1,0 +1,59 @@
+# giip tune for 64gb
+
+skip_name_resolve               = 1
+default_storage_engine          = InnoDB
+performance_schema              = 0
+sql_mode                        = "NO_ENGINE_SUBSTITUTION"
+
+log_error                       = /var/log/mysql/mysql_log.err
+slow_query_log                  = ON
+slow_query_log_file             = /var/log/mysql/mysql_slow_queries.log
+long_query_time                 = 10
+# tmpdir                          = /var/lib/mysql/tmp
+
+max_allowed_packet              = 256M
+max_connections                 = 400
+open_files_limit                = 10000
+wait_timeout                    = 120
+connect_timeout                 = 120
+interactive_timeout             = 180
+max_statement_time              = 60
+innodb_strict_mode              = OFF
+#innodb_file_per_table          = ON
+aria_pagecache_division_limit   = 50
+
+table_open_cache                = 128
+table_open_cache_instances      = 16
+query_cache_type                = ON
+query_cache_size                = 256M
+thread_cache_size               = 40
+query_cache_limit               = 300M 
+key_buffer_size                 = 3G
+key_cache_division_limit        = 50
+join_buffer_size                = 512M
+read_buffer_size                = 256K
+read_rnd_buffer_size            = 192K
+max_heap_table_size             = 512M
+tmp_table_size                  = 512M
+max_tmp_tables                  = 300
+
+innodb_buffer_pool_size         = 11G
+innodb_log_file_size            = 2G
+#innodb_log_buffer_size         = 1G
+#innodb_buffer_pool_instances    = 8
+#innodb_file_format              = Barracuda
+#innodb_max_dirty_pages_pct     = 0
+#innodb_io_capacity              = 1000
+#innodb_io_capacity_max         = 600
+#innodb_flush_sync              = OFF
+#innodb_buffer_pool_dump_pct     = 80
+#innodb_flush_log_at_trx_commit  = 0 #or 2
+#sync_binlog                     = 0
+#innodb_flush_method             = O_DIRECT
+#innodb_thread_concurrency       = 0
+#innodb_read_ahead_threshold     = 8
+#innodb_lru_scan_depth           = 100
+
+#concurrent_insert               = 1
+#local_infile                    = 0
+#group_concat_max_len            = 102400
