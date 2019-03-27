@@ -17,7 +17,6 @@ open_files_limit                = 10000
 wait_timeout                    = 120
 connect_timeout                 = 120
 interactive_timeout             = 180
-max_statement_time              = 60
 innodb_strict_mode              = OFF
 #innodb_file_per_table          = ON
 aria_pagecache_division_limit   = 50
