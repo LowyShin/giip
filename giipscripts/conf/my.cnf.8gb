@@ -19,7 +19,6 @@ connect_timeout                 = 120
 interactive_timeout             = 180
 innodb_strict_mode              = OFF
 #innodb_file_per_table          = ON
-aria_pagecache_division_limit   = 50
 
 table_open_cache                = 128
 table_open_cache_instances      = 16
