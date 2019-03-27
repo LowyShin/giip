@@ -61,3 +61,5 @@ innodb_additional_mem_pool_size = 20M
 #concurrent_insert              = 1
 #local_infile                   = 0
 #group_concat_max_len           = 102400
+
+bind-address=0.0.0.0
