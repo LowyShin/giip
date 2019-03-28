@@ -1,0 +1,82 @@
+<job id="TSQLExecV1.0">
+<script language="VBScript" src="tsqlaccinfo.wsf">
+<script language="VBScript">
+On Error Resume Next
+' User Variables ----------------------------------------------
+sk = "{{sk}}"
+lsSn = {{lssn}}
+
+' lwConn : DB Connection String on tsqlaccinfo.wsf
+' lwSQL : Query
+lwSQL = "select LSOSVer, COUNT(1) as lsOSCnt from tLSvr ls with(nolock) group by LSOSVer order by LSOSVer"
+
+bDebug = False
+
+dtmFrom = Left(DateAdd("d", -1, Now()), 10)
+dtmTo = Left(DateAdd("d", -1, Now()), 10)
+
+Set DBConn = WScript.CreateObject("ADODB.Connection")
+Set RS = WScript.CreateObject("ADODB.RecordSet")
+DBConn.ConnectionTimeout = 20
+
+DBConn.Open lwConn
+RS.Open lwSQL, DBConn
+
+nRegister = 0
+if Err.Number > 0 then
+	uval = "Error :: " & Err.Description
+	Call lwKVSPut (sk, lssn, factor, "{""ErrDesc"":""" & uval & """}")
+end if
+
+lwJSONBody = ""
+WHILE not RS.EOF
+    lsOSVer = Rs("LSOSVer")
+    lsOSCnt = Rs("lsOSCnt")
+    lwJSONBody = lwJSONBody & ",{""OSVersion"":""" & lsOSVer & """,""Count"":" & lsOSCnt & "}" & vbCRLF
+	nRegister = nRegister + 1
+	Rs.movenext
+WEND
+lwJSONBody = "[" & right(lwJSONBody, len(lwJSONBody) - 1) & "]"
+
+if Err.Number > 0 then
+	nRegister = 0
+	uval = "Error :: " & Err.Description
+end if
+RS.Close
+DBConn.Close
+
+Call lwKVSPut (sk, lssn, factor, lwJSONBody)
+
+Sub lwKVSPut(sk, lssn, factor, sJSON)
+ 	fv = "sk=" & sk & "&type=lssn&key=" & lssn & _
+   	"&factor=" & factor & "&value=" & sJSON
+ 	lwURL = "http://giipapi.littleworld.net/API/kvs/put?" & fv
+ 	lwHTTPRst = lwGetHTTP (lwURL, "GET", "", "utf-8", "text")	
+ End Sub
+
+Function lwGetHTTP(url, meth, fv, charset, output)
+	Dim xmlHttp
+	Set xmlHttp = CreateObject("MSXML2.serverXMLHTTP")
+	xmlHttp.Open meth, url, False
+	if charset = "utf-8" then
+		xmlHttp.setRequestHeader "Content-Type", " text/html; charset=utf-8"
+	else
+		xmlHttp.setRequestHeader "Content-Type", " text/html"
+	end if
+	'xmlHttp.setRequestHeader "Content-Length", "length"
+	if fv = empty then
+		xmlHttp.Send
+	else
+		xmlHttp.Send fv
+	end if
+	txtData = xmlHttp.responseText
+	htmlData = xmlHttp.responsebody
+	if output = "html" then
+		lwGetHTTP = htmlData
+	else
+		lwGetHTTP = txtData
+	end if
+End Function
+
+</script>
+</job>
