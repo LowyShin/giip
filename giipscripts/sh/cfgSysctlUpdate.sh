@@ -7,33 +7,40 @@ lssn="{{lssn}}"
 
 # Custom Variables [start]===============================================
 # for kvs
-factor="SYSCTL"
-chgval="10"
+factor="CfgTune"
+
 # Custom Variables [end]===============================================
-{{CustomVariables}}
-
+# {{CustomVariables}}
 today=`date +%Y%m%d`
-ofile="/etc/sysctl.conf"
-ofilebak="$ofile.$today"
-findval="net.ipv4.tcp_fin_timeout"
 
+### Starting Change ###
+ofile="/etc/sysctl.conf"
+findval="net.ipv4.tcp_fin_timeout"
+chgval="10"
+
+# initilize
+ofilebak="$ofile.$today"
+ojsontmp="${ofile}_${today}.json"
+rm -f $ojsontmp
+
+cp $ofile $ofilebak
 if grep -o "$findval" $ofile > /dev/null
 then
-	#backup
-	cp $ofile $ofilebak
 	oldvalue=$(grep $findval $ofile | awk '{ print $3 }')
-
-	if [ $oldvalue -gt $chgval ]
+	if [ $oldvalue -ne $chgval ]
 	then
-		sed -i "s|\("$findval" *= *\).*|$findval = $chgval|" $ofile
+		sed -i "s|\("$findval" *= *\).*|$findval=$chgval|" $ofile
 	fi
-
 	sysctl -p
-
-	valueJSON="{\"FACTOR\":\"$factor\",\"DATA\":[{\"FIELD\":\"$findval\",\"ORG\":$oldvalue,\"NEW\":$chgval,\"BAKFILE\":\"$ofilebak\"}]}"
-
-	# Send to KVSAPI Server =========================================
-	qs="sk=$sk&type=lssn&key=$lssn&factor=$factor&value=$valueJSON"
-	wget "http://giip.littleworld.net/API/kvs/put?$qs"
-
+	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
+else
+	rst=`echo $findval=$chgval >$ofile`
+	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 fi
+
+# put KVS
+valueJSON=`cat $ojsontmp`
+valueJSON="[${valueJSON}]"
+# Send to KVSAPI Server =========================================
+qs="sk=$sk&type=lssn&key=$lssn&factor=$factor&value=$valueJSON"
+wget "http://giip03.littleworld.net/API/kvs/kvsput.asp?$qs"
