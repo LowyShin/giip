@@ -8,7 +8,7 @@ lsSn = {{lssn}}
 
 ' lwConn : DB Connection String on tsqlaccinfo.wsf
 ' lwSQL : Query
-lwSQL = "select LSOSVer, COUNT(1) as lsOSCnt from tLSvr ls with(nolock) group by LSOSVer order by LSOSVer"
+lwSQL = "select * from table01 with(nolock)"
 
 bDebug = False
 
