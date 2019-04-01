@@ -17,10 +17,12 @@ today=`date +%Y%m%d`
 ofile="/etc/sysctl.conf"
 
 ofilebak="$ofile.$today"
+ofiletmp="$ofile.tmp"
 ojsontmp="${ofile}_${today}.json"
 rm -f $ojsontmp
 
 cp $ofile $ofilebak
+
 findval="net.ipv4.tcp_tw_recycle"
 chgval="1"
 if grep -o "$findval" $ofile > /dev/null
@@ -33,12 +35,10 @@ then
 	sysctl -p
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 else
-    rst=`echo $ofilebak >$ofile`
 	rst=`echo $findval=$chgval >>$ofile`
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 fi
 
-cp $ofile $ofilebak
 findval="net.ipv4.tcp_tw_reuse"
 chgval="1"
 if grep -o "$findval" $ofile > /dev/null
@@ -51,12 +51,10 @@ then
 	sysctl -p
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 else
-    rst=`echo $ofilebak >$ofile`
 	rst=`echo $findval=$chgval >>$ofile`
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 fi
 
-cp $ofile $ofilebak
 findval="net.ipv4.tcp_fin_timeout"
 chgval="5"
 if grep -o "$findval" $ofile > /dev/null
@@ -69,7 +67,6 @@ then
 	sysctl -p
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 else
-    rst=`echo $ofilebak >$ofile`
 	rst=`echo $findval=$chgval >>$ofile`
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 fi
