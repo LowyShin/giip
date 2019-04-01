@@ -1,6 +1,6 @@
 #!/bin/bash
 # Written by Lowy Shin at 20160627
-# 20190331 Lowy, Update my.cnf for CCT
+# 20190331 Lowy, Update sysctl.conf for CCT
 # System Variables ===============================================
 sk="{{sk}}"
 lssn="{{lssn}}"
