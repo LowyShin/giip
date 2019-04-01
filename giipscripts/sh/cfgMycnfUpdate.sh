@@ -34,10 +34,12 @@ then
 	sysctl -p
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 else
-	rst=`echo $findval=$chgval >$ofile`
+    rst=`echo $ofilebak >$ofile`
+	rst=`echo $findval=$chgval >>$ofile`
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 fi
 
+cp $ofile $ofilebak
 findval="interactive_timeout"
 chgval="28800"
 if grep -o "$findval" $ofile > /dev/null
@@ -50,10 +52,12 @@ then
 	sysctl -p
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 else
-	rst=`echo $findval=$chgval >$ofile`
+    rst=`echo $ofilebak >$ofile`
+	rst=`echo $findval=$chgval >>$ofile`
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 fi
 
+cp $ofile $ofilebak
 findval="net_read_timeout"
 chgval="6000"
 if grep -o "$findval" $ofile > /dev/null
@@ -66,10 +70,12 @@ then
 	sysctl -p
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 else
-	rst=`echo $findval=$chgval >$ofile`
+    rst=`echo $ofilebak >$ofile`
+	rst=`echo $findval=$chgval >>$ofile`
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 fi
 
+cp $ofile $ofilebak
 findval="net_write_timeout"
 chgval="6000"
 if grep -o "$findval" $ofile > /dev/null
@@ -82,10 +88,12 @@ then
 	sysctl -p
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 else
-	rst=`echo $findval=$chgval >$ofile`
+    rst=`echo $ofilebak >$ofile`
+	rst=`echo $findval=$chgval >>$ofile`
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 fi
 
+cp $ofile $ofilebak
 findval="wait_timeout"
 chgval="28800"
 if grep -o "$findval" $ofile > /dev/null
@@ -98,7 +106,8 @@ then
 	sysctl -p
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 else
-	rst=`echo $findval=$chgval >$ofile`
+    rst=`echo $ofilebak >$ofile`
+	rst=`echo $findval=$chgval >>$ofile`
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 fi
 
