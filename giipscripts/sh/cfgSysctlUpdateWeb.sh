@@ -32,7 +32,6 @@ then
 	then
 		sed -i "s|\("$findval" *= *\).*|$findval=$chgval|" $ofile
 	fi
-	sysctl -p
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 else
 	rst=`echo $findval=$chgval >>$ofile`
@@ -48,7 +47,6 @@ then
 	then
 		sed -i "s|\("$findval" *= *\).*|$findval=$chgval|" $ofile
 	fi
-	sysctl -p
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 else
 	rst=`echo $findval=$chgval >>$ofile`
@@ -64,12 +62,13 @@ then
 	then
 		sed -i "s|\("$findval" *= *\).*|$findval=$chgval|" $ofile
 	fi
-	sysctl -p
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 else
 	rst=`echo $findval=$chgval >>$ofile`
 	echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
 fi
+
+sysctl -p
 
 # put KVS
 valueJSON=`cat $ojsontmp`
