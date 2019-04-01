@@ -7,7 +7,7 @@ lssn="{{lssn}}"
 
 # Custom Variables [start]===============================================
 # for kvs
-factor="CfgTune"
+factor="CfgTune-sysctl"
 
 # Custom Variables [end]===============================================
 # {{CustomVariables}}
