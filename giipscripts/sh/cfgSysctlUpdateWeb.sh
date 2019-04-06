@@ -28,7 +28,7 @@ findval="net.ipv4.tcp_tw_recycle"
 chgval="1"
 if grep -o "$findval" $ofile > /dev/null
 then
-    sed -i "s|"$findval"|"${ocharcmt} ${today} ${findval}"|" $ofile
+    sed -i "s|"$findval"|"${ocharcmt}" "${today}" "${findval}"|" $ofile
 fi
 rst=`echo $findval=$chgval >>$ofile`
 echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
@@ -37,7 +37,7 @@ findval="net.ipv4.tcp_tw_reuse"
 chgval="1"
 if grep -o "$findval" $ofile > /dev/null
 then
-    sed -i "s|"$findval"|"${ocharcmt} ${today} ${findval}"|" $ofile
+    sed -i "s|"$findval"|"${ocharcmt}" "${today}" "${findval}"|" $ofile
 fi
 rst=`echo $findval=$chgval >>$ofile`
 echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
@@ -46,7 +46,7 @@ findval="net.ipv4.tcp_fin_timeout"
 chgval="5"
 if grep -o "$findval" $ofile > /dev/null
 then
-    sed -i "s|"$findval"|"${ocharcmt} ${today} ${findval}"|" $ofile
+    sed -i "s|"$findval"|"${ocharcmt}" "${today}" "${findval}"|" $ofile
 fi
 rst=`echo $findval=$chgval >>$ofile`
 echo "{\"FileName\":\"$ofile\",\"Param\":\"$findval\",\"pValue\":\"$chgval\"}" >>$ojsontmp
