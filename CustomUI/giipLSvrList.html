@@ -25,7 +25,7 @@
 
 <script>
 
-var giipAPI = "http://giip.littleworld.net/api/lsvr/list?jsoncallback=?"
+var giipAPI = "http://giipapi.littleworld.net/api/lsvr/list?jsoncallback=?"
 
 $(document).ready(function(){
 
@@ -35,7 +35,7 @@ $(document).ready(function(){
     {
         type: "GET",
         url: giipAPI,
-		data: "sk=<Secret Key>&otype=json",
+		data: "sk=<secret key>>8&otype=json",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         cache: false,

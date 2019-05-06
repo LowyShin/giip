@@ -41,8 +41,18 @@ var giipGraph = Morris.Donut({
 </center>
 
 <script>
+var lwsk = "d27f9d4be6e9674605844275903fd468";
+var lwfactor = "UsagePer";
+var lwattrib = "MemoryUsage";
 
-var giipAPI = "http://giip.littleworld.net/api/kvs/trg/statistics?jsoncallback=?";
+//var lwsk = "<secret key>";
+//var lwfactor = "<factor of KVS>";
+//var lwattrib = "<attribute of KVS>";
+var giipAPI = "http://giipapi.littleworld.net/api/kvs/trg/statistics?jsoncallback=?";
+
+
+// see more graphs and customize
+// https://morrisjs.github.io/morris.js/
 
 $(document).ready(function(){
 
@@ -52,7 +62,7 @@ $(document).ready(function(){
     {
         type: "GET",
         url: giipAPI,
-        data: "sk=<secret key>&factor=PROCCHK&attrib=PROCCNT",
+        data: "sk=" + lwsk + "&factor=" + lwfactor + "&attrib=" + lwattrib,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         cache: false,
@@ -66,11 +76,14 @@ $(document).ready(function(){
             
             trHTML += '<tr>';
             trHTML += '<td align="center">' + item.LSUsage + '</td>';
-		if (item.kValMax == "1"){
-	            trHTML += '<td align="center" bgcolor="lightgreen"> On </td>';
-		    grCol = '#90EE90';
+		if (item.kValMax >= "90"){
+            trHTML += '<td align="center" bgcolor="orange"> ' + item.kValMax + ' </td>';
+            grCol = '#FFA500';
+		}else if (item.kValMax > "0"){
+            trHTML += '<td align="center" bgcolor="lightgreen"> ' + item.kValMax + ' </td>';
+            grCol = '#90EE90';
 		}else{
-	            trHTML += '<td align="center" bgcolor="gray"> Off </td>';
+            trHTML += '<td align="center" bgcolor="lightgray"> ' + item.kValMax + ' </td>';
 		    grCol = '#D3D3D3';
 		}
             trHTML += '</tr>';
