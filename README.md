@@ -1,6 +1,3 @@
-# giip
-Global Infrastructure Integration Platform
-
 Service Page : http://giipweb.littleworld.net
 
 Documentation : 
@@ -8,61 +5,141 @@ Documentation :
   * Japanses : https://github.com/LowyShin/giipdoc-ja/wiki
   * Korean : https://github.com/LowyShin/giipdoc-ko/wiki
 
-## Service Overview
+***
 
-Cloud environment has become more common. I believe that most of SE has experienced cloud services, although Cloud services have to be used additionally using current Legacy equipment most of the times. Even it makes SE take more time to learn how to use complicated user portal by using multiple cloud services.
+We launched GIIP token!!
 
+Token exchanges : https://tokenjar.io/GIIP
 
-You pay for AWS with a great number of functions which is barely used in combination with co-location legacy equipment. Is AWS really beneficial? Well, is cloud really essential?
+Token sales information : https://www.slideshare.net/LowyShin/giipentokenjario-giip-token-trade-manual-20190416-141149519
 
-
-No matter which server you use, you open excel to manage asset by yourself after all. All information about asset is input manually, and making changes in system without updating to excel happens quite a lot.
-
-
-No matter which cloud service or hosting you use, aren't you just log on at the first time and hardly ever log on again afterward? In the end, only familiar functions in the system are used rather than complicated new service. You will find yourself opening excel and inputting data to it as usual.
+![giip Token Economy][giiptokeneconomy]
 
 
-It is not easy to persuade a superior to purchase a tool for asset management. Managers purchase solutions to figure numbers or efficiency for ROI or whatever they care, but mean for tools that hands-on workers need. So it is hard to use for hands-on workers are not able to use money from their pocket, and management tools for hands-on workers mostly cost money. Who is the solution for? Who is the tool for?
+# giip
+
+We opened wiki in github to share knowledge and scripts for giip.
+
+Wiki in English : https://github.com/LowyShin/giip/wiki (giip related operation scripts can be found here)
+
+Wiki in Japanese: https://github.com/LowyShin/giipdoc-ja/wiki
+
+## Overview
+
+How do we design to fully automate operation on all kinds of devices in the world (i.e. Robots, Drones, IoT devices, Server, PC, Mobile device)?
+
+We look at DevOps systems from developers’ point of view as most of them are planned and developed by developers. Because of that, even though we develop system operation tools with DevOps, they can’t cover huge system. We have to do some in manual way or do sharding. Then, what would be the system like if system architecture designs DevOps? 
 
 
-Now, there is a practical propose for SE.
+Here is the operation system architecture that has been continuously improved since 2007 while operating large scale system like financial system in SFI(SONY Finance International), system operation for massive multiplayer online games and fight with crackers in Nexon, network management for service that has more than 300Gbps instant traffic like LoL(League of Legends), ISP network operation as big as backbone of country, and big cloud services operation.
+
+That's why born of giip engine.
+
+Below is our philosophy for the engine that we has continuously built and updated for more than 10 years. 
+
+## KVS (Key Value Store)
+
+KVS concept is implemented to collect data from any system, and to use unstructured data type JSON like database. Most of system operators have experience of struggling to match data format or use different tools, and probably struggling at the moment as well.
+It is the first operation system that you can manage intuitively, that displays data to screen as if you see it from server, even if the data is in a different format from different OS (Linux, Windows, Mac OS, HP-UX, AIX, Solaris, etc).
+
+![giip KVS:Key value store][Trigger Graph]
+
+## MSA (Microservice Architecture)
+
+All functionality can be separated, or removed. It is designed completely based on MSA, so it is easy to apply new technology, and function failure would not lead to service failure. You can extract some of functionality from giip and use it for other system. It’s also possible to create a new service by connecting some giip functionality. 
+
+![alt text][giipArchitecture]
+
+## MVC (Model View Controller)
+
+There are source code classification algorithms like MVC or MVP. In giip we have original MVC. With other development framework’s MVC, we had to choose View, Model, and Controllers all based on the framework. However with giip we can put each Model or View with totally different framework together. You can use giip as a new service by purchasing Bootstrap theme, copying and customizing API. You can use as RDBMS. It is also easy to utilize with NoSQL.
+
+## Scale out ＆ Redundancy
+
+Some developers think that integrated source management is an old way. However Amazon and GREE, that runs more than 10,000 servers, deploy integrated source to many servers, and enable only necessary functionality among them. By doing that, we can deploy clients to hundreds of servers, and we can enable API functionality on other 1/3 servers, that are used for other purpose and still have capacity, so we can scale out and implement redundancy.
+
+## GLB (Global Load Balancer)
+
+Load balance can be implemented to all resources in all over the world like servers in various geographical locations (U.S.A or Europe) by using GLB(Someone calls GSLB). New scalability and distribution concept has been applied that could not be done with existing L4 like DSR.
+
+## RPA (Robotics Process Automation)
+
+giip engine was designed in 2007 based on experience on automated operation system. i.e. HITACHI JobNet, JP1, Senju, BMC Control-M, and so on.
+We have base structure that is designed for perfect RPA as human. It is totally different from other products that forcefully add RPA feature to existing solutions. Human like mouse movement and screen recognition as it is controlled by utilizing many user input tools like Autohotkey, Selenium, and Jmeter to implement real user actions.
+
+![giip AI management][giip-concept-AISE]
+
+## CQE(Command Queue Engine)
+
+CQE defines what jobs clients do, and manages execution according to conditions. It is giip original engine that is designed to manage jobs for many different scenarios, like checking specific server failure via mobile device, sending commands to which laptop to handle, having the laptop remotely control the server, or which media to save regular backups after local compression and sending them to networks.
+
+## MQE(Message Queue Engine)
+
+It is giip original message queue engine that resolved MQTT’s weakness. It exchanges data with JSON method. Even if there are many things to process, because it follows FIFO, even when using like RDBMS cache it can process fast like Async method. Also a client with network authorization (for example via Secret Key) can receive information and makes a decision or reports. It is easy to make graphs or statistics using KVS. If it is difficult to compile statistics with JSON data format because of format issue, it can parse JSON data regularly to change format that works better with graphs. It is easier to create dashboards or reports by integrating data with graph tool based on JSON data like Morris.js, jqplot. 
+
+![giip Message Queue Engine][giipMessageQueue]
+
+## Open source
+
+It is made with MSA structure, so it can be connected with many open sources like Openstack, kubernetes, Node.js, Bootstrap, ELK(Elastic Logstash Kibana), and EFK(Elastic Fluentbit, Kibana). When using open sources you can exclude some features that are already in giip. Inversely, you can extract some of giip features and use open sources as base.
+
+See also, https://www.slideshare.net/LowyShin/giip-engine-open-source-revolution
+
+## MarketPlace
+
+You can create scripts with your system operation knowhow and sell them. 
+If a simple backup script is 0.01USD per execution, and if customer execute once a day it would be 0.3USD per month. There are tools that are normally difficult to install/set up like MongoDB, or Hadoop, but you can easily install to your serves by selecting it from market place and deploying. You don’t need all knowledge but need only knowledge that helps your business, then for rest of it you can request other people who have experience with low price. The most suitable system operation tools for global business will be provided. For system engineers, you used to be paid for hours that you worked, but now once you upload your knowhow you can create unlimited value.
+
+Marketplace : http://giipweb.littleworld.net/view/SMAHTML/MPScriptList.asp
+
+## MLE(Machine Learning Engine)
+
+For machine learning functionality we still use CQE and MQE, but we have been improving marketplace while considering structure that connects GPU resources provider, machine learning algorithm provider, and recourses consumers. Since it is designed based on MSA completely, it is taking time. However, sensitive data like life insurance, app data, or stock related data process is being customized on giip engine. With these knowhow, market place will be evolved and connect resources, knowledge, and clients.
+
+## Is giip for me?
+
+Now saying real examples.
+
+We have a client who is using AWS(Amazon Web Service). Development server and VMs which installed giip Agent were in internal local IP environment. Giip can still do integrated management in this environment. One day, we received CS call from this client. The client could not connect to server with ssh from anywhere, because the client applied iptables to AWS VM without IP address for remote connection by mistake. AWS replied to the client that they need to create new VM. However fortunately giip agent was running, we could send remote command “service iptables stop (systemctl stop firewalld on CentOS7)”. The client was finally able to connect.
+
+As you can see, there are many things that cannot be done with basic tools provided by cloud service providers. Also in many situations, it can be used within the rule defined by the providers. Furthermore, you cannot manage internal development server together which has local IP address. There is no tool for domain based service like Azure as IP address is changed frequently. We had experienced difficulty in many operation environments. That’s why we could build giip to do integrated management in these environments.
+
+Many of CSB(Cloud Service Brokerage), CMP(Cloud Management Platform) services just connect each cloud providers’ API. People who really run systems do not use these. These are just to show, and created by people who do not have experience on system operation. What is important is not just creating VM. The most important thing is whether the service on VM or PM is running properly or not.
+
+One user said that giip has a charm that he simply cannot stop using it. You can also recreate UI and manage only with API as if it is your personalized tool. Would you like to try giip? 
 
 
-You may register by yourself for new brilliant services coming out every day and giving you a hard time, since there are necessary functions. (We don't offer huge services... orz...) But we offer the most convenient service that will lessen your concerns intuitively.
+## Looking for Partners 
+
+We are looking for individuals or companies who would like to improve giip together! Please contact us. We can share environment and source.
+It is free if you create scripts by yourself to operate for your system. Plus, if you standardize scripts and upload to market place, you can earn money. Are you creating scripts? We can work together and share your experience with the whole world.
+ 
+
+Please contact giip for any inquiry, partner, or advertisement.
+
+[Contact Us](https://github.com/LowyShin/giip/wiki/Contact-Us)
 
 
-giip offers the functions you truly need for free, and also charged service which you can process an expense report to pay.
+## Token Sales
+
+Token exchanges : https://tokenjar.io/GIIP
+
+Token sales information : https://www.slideshare.net/LowyShin/giipentokenjario-giip-token-trade-manual-20190416-141149519
+
+1 gas = 0.0005 GIIP
+
+For token purchase, collaboration, token development (ERC20, ERC721, etc)
+
+[Contact Us](https://github.com/LowyShin/giip/wiki/Contact-Us)
 
 
-There is no exceptional automatic function in giip. There is no remarkably advanced technology.
 
-
-What we do is to think deeply at all times how we can mitigate your inconvenience since we do same work having same concerns as you.
-
-
-If you don't have a clear image about our service, please contact us. From a minor question, we listen to your opinion about feature that you desire, and will provide the most convenient result for you. Even you can tell us your concern not regarding our services. Who knows? Peter Pan might suddenly appear.. ^^;;
-
-
-If you have been putting all screens together all the while by using unrealistic services which go on and on what functions or what services are, how about integrating all the systems to this just one service?
-
-
-- Datacenter information management - Rack information management, Rack diagram management - Physical machine asset management - Virtual server (cloud server) asset management - IP asset management - HDD asset management - Automatic update of asset information - Asset availability check - Domain asset management - Various check script support
-
-
-This service has been provided based on your opinion. It will be revised and create new functions with your idea and feedback on which your name will be. It has meaning that we all take part in it. We are waiting for participation of third parties or tool developers with API. We will keep an open mind to provide platforms truly for SE.
-
-
-To log on for this service, simply use Google ID. There is no need to register, no personal information to be saved. E-mail address might be saved if necessary. Although it is not without permission, as customer input the information by themselves. Even though we have been making an effort for security, there is a possibility of bugs. Please contact us by submitting 'inquiry' form, if you find any bug. It will be appreciated.
-
-
-### OE : On-Premise Edition
-On-Premise Edition is a service for information security with servers under the control of customers. It is provided as an appliance which is located at a place that the customer designates, and data storage is applied by customers' enterprise security rule.
-
-
-Some of administration ports need to be connected to our administration system for server operation and version management. In the case of blocking network completely for customer's security issue, server status will be monitored by the customer. However, server access privileges and support in the case of server failure will be handled by our Tier 1 Support company.
-
-
-Please consult us by clicking 'inquiry', if there is a need of On-Premise Edition service for security.
-
-
-Some people wonder how we can get profit when we offer free services. To conclude, a profit will be made by you. You can simply use this service for free, and if you need to purchase infra service, appliance, solution, software, please inquire of us. If you need to purchase anyway, it would be great to contribute to the development of our service by purchasing our service, since this will bring the benefit of free service to you too. You will get an opportunity to use paid service for free by using this system. This is the vision what we would like to bring. Thank you in advance for your support.
+[giiptokeneconomy]: https://github.com/LowyShin/giip/blob/gh-pages/images/PP/GIIP%20Token%20economy.png "giiptokeneconomy"
+[giip-concept-AISE]: https://github.com/LowyShin/giip/blob/gh-pages/images/PP/giip-PP-Intro-AISE02.png "giip-concept-AISE"
+[giip-concept]: /LowyShin/giip/blob/gh-pages/images/ss/giip_intro02.png "giip-concept"
+[giip-intro-position]: /LowyShin/giip/blob/gh-pages/images/ss/giip_position1607.png "giip-intro-position"
+[giipCompetition]: /LowyShin/giip/blob/gh-pages/images/giip-competition.jpg "giip Competition"
+[giipMessageQueue]: /LowyShin/giip/blob/gh-pages/images/giip-MessageQueArchitecture.jpg "giip Message Queue"
+[Trigger Graph]: /LowyShin/giip/blob/gh-pages/images/ss/giip-SS-TriggerAdd01-Graph.png "giip Trigger Graph"
+[giipArchitecture]: /LowyShin/giip/blob/gh-pages/images/ss/giip_architecture_1607.png "giip Architecture"
+[Logical Server Detail]: /LowyShin/giip/blob/gh-pages/images/ss/giip-SS-LogicalServerDetail.png "Logical Server Detail"
