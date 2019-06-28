@@ -15,8 +15,28 @@ Token sales information : https://www.slideshare.net/LowyShin/giipentokenjario-g
 
 ![giip Token Economy][giiptokeneconomy]
 
+# Introduce
+
+Customer want server works and development as DevOps, etc. but then want waste money.
+
+SIer want get more money from customer for server works, and development, etc.
+
+How can reduce their gap?
+
+We think GIIP token for it!
+
+Customer pay their budget. 
+And worker can get their pair work revenue by GIIP token.
+
+If worker need money as soon as possible, then worker sales GIIP token to market cheaper.
+If worker does not need money soon, then worker sales GIIP token good price position on market.
+
+It is any work can fit this ecosystem.
+But we starting on RPA territory. because RPA is best fittable on GIIP ecosystem.
 
 # giip
+
+giip is RPA engine that human works transform to AI. 
 
 We opened wiki in github to share knowledge and scripts for giip.
 
