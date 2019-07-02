@@ -1,0 +1,1 @@
+# Technical Architecture directory
