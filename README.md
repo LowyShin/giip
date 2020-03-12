@@ -1,4 +1,4 @@
-Service Page : http://giipweb.littleworld.net
+Service Page : http://giipasp.azurewebsites.net
 
 Documentation : 
   * English : https://github.com/LowyShin/giip/wiki
