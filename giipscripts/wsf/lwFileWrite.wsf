@@ -64,7 +64,7 @@ End Sub
  Sub lwKVSPut(sk, lssn, factor, sJSON)
  	fv = "sk=" & sk & "&type=lssn&key=" & lssn & _
    	"&factor=" & factor & "&value=" & sJSON
- 	lwURL = "http://giipapi.littleworld.net/API/kvs/put?" & fv
+ 	lwURL = "https://giipaspi04.azurewebsites.net/API/kvs/put?" & fv
  	lwHTTPRst = lwGetHTTP (lwURL, "GET", "", "utf-8", "text")	
  End Sub
  

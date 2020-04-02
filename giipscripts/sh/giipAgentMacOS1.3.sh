@@ -45,7 +45,7 @@ tmpFileName="giipTmpScript.sh"
 logdt=`date '+%Y/%m/%d %H:%M:%S'`
 Today=`date '+%Y%m%d'`
 LogFileName="giipAgent_$Today.log"
-lwDownloadURL="http://giipapi.littleworld.net/api/cqe/queue/get03?sk=$sk&lssn=$lssn&os=$os&df=os"
+lwDownloadURL="https://giipaspi04.azurewebsites.net/api/cqe/queue/get03?sk=$sk&lssn=$lssn&os=$os&df=os"
 #echo $lwDownloadURL
 
 curl -o $tmpFileName $lwDownloadURL

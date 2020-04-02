@@ -13,7 +13,7 @@ valueJSON=`echo "{\"$factor\":$AttribCnt,\"DATA\":[ $valueJSON ]}" | sed -e "s/\
 
 # Send to KVSAPI Server =========================================
 qs="sk=$sk&type=lssn&key=$lssn&factor=$factor&value=$valueJSON"
-lwAPIURL="http://giipapi.littleworld.net/API/kvs/kvsput.asp"
+lwAPIURL="https://giipaspi04.azurewebsites.net/API/kvs/kvsput.asp"
 if [ $AttribCnt > 0 ]; then
 	curl -k -w '\n' "$lwAPIURL" --data "$qs" -XPOST
 fi

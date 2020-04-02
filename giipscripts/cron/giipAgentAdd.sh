@@ -12,7 +12,7 @@ crontab -l
 # make file
 mkdir -p /usr/local/giip/scripts
 # download giip agent
-wget "http://giipapi.littleworld.net/api/agent/getbylabel?op=giipAgentlinux&sk=$sk&lb=$lb" -O /usr/local/giip/scripts/giipAgent.sh
+wget "https://giipaspi04.azurewebsites.net/api/agent/getbylabel?op=giipAgentlinux&sk=$sk&lb=$lb" -O /usr/local/giip/scripts/giipAgent.sh
 
 # check and install dos2unix
 ostype=`head -n 1 /etc/issue | awk '{print $1}'`

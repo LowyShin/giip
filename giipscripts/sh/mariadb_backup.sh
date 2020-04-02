@@ -40,7 +40,7 @@ valueJSON=`echo "[{\"FieldName\":\"FileCount\",\"Value\":${CntList}}]" | sed -e 
 # Send to KVSAPI Server =========================================
 qs="sk=$sk&type=lssn&key=$lssn&factor=$factor&value=$valueJSON"
 echo -e $valueJSON
-wget "http://giipapi.littleworld.net/API/kvs/put?$qs" -O "giipapi.log"
+wget "https://giipaspi04.azurewebsites.net/API/kvs/put?$qs" -O "giipapi.log"
 
 rm -f giipapi.log
 rm -f put?*

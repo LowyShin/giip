@@ -17,8 +17,8 @@ hn = "<your logical server label>"
 
 ' -------------------------------------------------------------
 ' System Variables
-lwURLAPI = "http://giipapi.littleworld.net/api/agent/getbylabel?op=giipAgentwin&sk={{sk}}&lb={{hn}}"
-lwURLChkAgent = "http://giipapi.littleworld.net/api/agent/chkver?op=giipAgentwin&sk={{sk}}&lb={{hn}}"
+lwURLAPI = "https://giipaspi04.azurewebsites.net/api/agent/getbylabel?op=giipAgentwin&sk={{sk}}&lb={{hn}}"
+lwURLChkAgent = "https://giipaspi04.azurewebsites.net/api/agent/chkver?op=giipAgentwin&sk={{sk}}&lb={{hn}}"
 lwPath = "."
 
 ' -------------------------------------------------------------
