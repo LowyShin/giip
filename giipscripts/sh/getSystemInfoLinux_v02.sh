@@ -22,6 +22,9 @@ if [ $ostype = "Ubuntu" ];then
 
 	mf=`sudo dmidecode | less | grep "Product Name"`
 	mf=`echo "$mf" | sed -e "s/Product Name\://g"`
+else
+	# CentOS7
+	os=`hostnamectl |grep "Operating System"`
 fi
 echo "OSver. : $os"
 mem=`free -mt | awk '/Mem/{print $2}'`
@@ -31,7 +34,7 @@ cpunum=`cat /proc/cpuinfo | grep processor | wc -l`
 
 # Send to API Server =========================================
 qs="at=$at&lssn=$lssn&hn=$hn&mf=$mf&cpuname=$cpuname&cpunum=$cpunum&mem=$mem&os=$os&mfsn=$mfsn"
-APIURL="http://giip.littleworld.net/API/LSvrInput_temp.asp?$qs"
+APIURL="http://giipasp.azurewebsites.net/api/LSvrInput_temp.asp?$qs"
 wget "$APIURL" -O giipAPISYS.txt
 
 # Check CPU Usage ===============================================
@@ -41,7 +44,7 @@ value="{\"CPUUsage\":$value}"
 
 # Send to KVSAPI Server =========================================
 qs="sk=$at&type=lssn&key=$lssn&factor=$factor&value=$value"
-APIURL="http://giip.littleworld.net/API/kvs/put?$qs"
+APIURL="http://giipasp.azurewebsites.net/api/kvs/put?$qs"
 wget "$APIURL" -O giipAPISYS.txt
 
 # Clean up =========================================
