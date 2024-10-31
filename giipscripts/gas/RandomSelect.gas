@@ -1,0 +1,34 @@
+function getRandomRows() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('【本番】ID生成');
+  var data = sheet.getRange(3, 11, 2000, 4).getValues(); // K3:N2002のデータを取得
+  var randomRows = [];
+  var indices = [];
+
+  // 1000個のランダムなインデックスを取得
+  while (indices.length < 1000) {
+    var randomIndex = Math.floor(Math.random() * 2000); // 2000行の中からランダム
+    if (indices.indexOf(randomIndex) === -1) {  // 重複を避ける
+      indices.push(randomIndex);
+      randomRows.push(data[randomIndex]);
+    }
+  }
+
+  // "RandomRows" シートが存在するか確認し、存在しない場合は作成
+  var newSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('RandomRows');
+  if (newSheet) {
+    // 既存のシートがある場合、内容をクリアする
+    newSheet.clear();
+  } else {
+    // 既存のシートがない場合、新しいシートを作成
+    newSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet('RandomRows');
+  }
+
+  // ランダムに選ばれた行が存在するか確認してからシートに書き込み
+  if (randomRows.length > 0) {
+    newSheet.getRange(1, 1, randomRows.length, randomRows[0].length).setValues(randomRows);
+  } else {
+    Logger.log("ランダムに選ばれた行がありません");
+  }
+}
+
+
