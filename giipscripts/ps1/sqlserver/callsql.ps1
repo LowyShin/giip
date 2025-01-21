@@ -1,3 +1,10 @@
+# Author : Lowy Shin
+# Date : 20250121
+
+# cmd ########################
+# powershell -ExecutionPolicy Bypass -File .\callsql.ps1 -SqlFileName "get_TableSize_alldbs.sql"
+##############################
+
 # Parameter setup
 param (
     [string]$SqlFileName = "GetTableSizes.sql"  # Default SQL file name
