@@ -1,0 +1,3 @@
+{
+    "CommonConnectionString": "Server={ServerName};Database=master;User ID=lowyshin;Password=mypwd;TrustServerCertificate=True;"
+}
