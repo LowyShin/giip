@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # System Variables ===============================================
-sk="{{sk}}"
+at="{{at}}"
 cSn="{{cSn}}"
 LSsn="{{LSsn}}"
 
 # Create query string
-qs="at=$sk&cSn=$cSn&LSsn=$LSsn"
+qs="at=$at&cSn=$cSn&LSsn=$LSsn"
 APIURL="https://giipapi.azurewebsites.net/script/list?$qs"
 
 # Send GET request
