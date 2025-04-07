@@ -11,8 +11,6 @@ We launched GIIP token!!
 
 Token exchanges by UNISWAP(https://app.uniswap.org/)
 
-Token sales information : https://www.slideshare.net/LowyShin/giipentokenjario-giip-token-trade-manual-20190416-141149519
-
 ![giip Token Economy][giiptokeneconomy]
 
 # Introduce
