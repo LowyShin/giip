@@ -9,7 +9,8 @@ Documentation :
 
 We launched GIIP token!!
 
-Token exchanges by UNISWAP(https://app.uniswap.org/)
+- Token exchanges by UNISWAP(https://app.uniswap.org/)
+  - Exchange Manual(https://docs.google.com/presentation/d/1-SXslxSBGEwgPQSL-wk3YzEAUtgWs1atwmyCJbTzrHY/edit?slide=id.g2e80187b9a7_0_5#slide=id.g2e80187b9a7_0_5)
 
 ![giip Token Economy][giiptokeneconomy]
 
