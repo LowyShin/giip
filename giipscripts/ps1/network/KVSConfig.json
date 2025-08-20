@@ -1,0 +1,10 @@
+{
+  "Enabled": true,
+  "Endpoint": "https://giipfaw.azurewebsites.net/api/giipApi",
+  "FunctionCode": "",
+  "UserToken": "",
+  "UserId": "",
+  "KType": "lssn",
+  "KKey": "",
+  "KFactor": "netinv"
+}
